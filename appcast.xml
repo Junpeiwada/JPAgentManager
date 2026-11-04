@@ -3,12 +3,12 @@
     <channel>
         <title>JPAgentManager</title>
         <item>
-            <title>0.1.1</title>
-            <pubDate>Wed, 04 Nov 2026 02:45:24 +0000</pubDate>
-            <sparkle:version>1</sparkle:version>
-            <sparkle:shortVersionString>0.1.1</sparkle:shortVersionString>
+            <title>0.1.2</title>
+            <pubDate>Wed, 04 Nov 2026 02:59:15 +0000</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>0.1.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>26.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/Junpeiwada/JPAgentManager/releases/download/v0.1.1/JPAgentManager-0.1.1.zip" length="2063516" type="application/octet-stream" sparkle:edSignature="+8kb/M1VqgJyHjPpIATSX+HQtWIYyB834jm/V/gdE3f1AaxnnXFJ0edp5D33tSe6XjgrlZOXvz7yn67kPu1pDg=="/>
+            <enclosure url="https://github.com/Junpeiwada/JPAgentManager/releases/download/v0.1.2/JPAgentManager-0.1.2.zip" length="2063511" type="application/octet-stream" sparkle:edSignature="PeFOFBeLbDoRUkquQi747DUcLmFPWFo9aNnsiIZYT33OyWSXNOJR/GGh/9CbK8BN5SA60u8dy/rfAHt5y8eiDA=="/>
         </item>
     </channel>
 </rss>
