@@ -1,0 +1,258 @@
+name: Release
+
+# タグ `v*`（例: v1.2.0）push でリリースを発行する。手動実行も可（バージョンを入力）。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "リリースバージョン（例: 1.2.0）。タグ push 時は不要。"
+        required: false
+
+permissions:
+  contents: write   # gh release 作成 / gh-pages への appcast push に必要
+
+# 続けて 2 つ走ると、古い版の appcast が新しい版を上書きしうる。直列化する。
+# 実行中のものは止めない。ただし待機中は 1 件だけで、さらに来ると待機中のものは取り消される
+# （その版は手動で Re-run する）。
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    # deploymentTarget が macOS 26.0 のため、macOS 26 SDK を持つランナーを使う。
+    runs-on: macos-26
+    env:
+      SCHEME: JPAgentManager
+      PROJECT: JPAgentManager.xcodeproj
+      TEAM_ID: ${{ secrets.TEAM_ID }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: バージョン / タグを決定
+        id: vars
+        # 式展開をシェルに直接埋め込まない（インジェクション対策）。env 経由で渡す。
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ "${REF_TYPE}" = "tag" ]; then
+            TAG="${REF_NAME}"
+            VERSION="${TAG#v}"
+          else
+            VERSION="${INPUT_VERSION}"
+            TAG="v${VERSION}"
+          fi
+          if [ -z "${VERSION}" ]; then
+            echo "::error::バージョンを決定できません（タグ push か workflow_dispatch の version 入力が必要）"
+            exit 1
+          fi
+          if ! [[ "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::バージョンは X.Y.Z 形式で指定してください。指定値: ${VERSION}"
+            exit 1
+          fi
+          echo "tag=${TAG}"        >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          # CFBundleVersion（Sparkle の比較基準）は単調増加する run 番号を使う。
+          echo "build=${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+          echo "リリース: ${TAG} (version=${VERSION}, build=${{ github.run_number }})"
+
+      - name: Xcode を選択
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: XcodeGen を導入
+        run: brew install xcodegen
+
+      - name: Xcode プロジェクトを生成
+        # .xcodeproj は .gitignore 対象（project.yml が真実のソース）なので必須。
+        run: xcodegen generate
+
+      - name: Sparkle 公開鍵が設定済みか確認
+        run: |
+          set -euo pipefail
+          KEY="$(plutil -extract SUPublicEDKey raw App/Info.plist 2>/dev/null || true)"
+          if [ -z "${KEY}" ]; then
+            echo "::error::SUPublicEDKey が未設定です。generate_keys で生成した公開鍵を App/Info.plist に反映してください。"
+            exit 1
+          fi
+
+      - name: Developer ID 証明書をインポート
+        uses: apple-actions/import-codesign-certs@v7
+        with:
+          p12-file-base64: ${{ secrets.DEVELOPER_ID_CERT_P12 }}
+          p12-password: ${{ secrets.DEVELOPER_ID_CERT_PASSWORD }}
+
+      - name: アーカイブ（Developer ID 署名）
+        # ハードンドランタイムは公証に必須。project.yml の Release 構成には入れない
+        # （アドホック署名のローカルビルドが起動しなくなるため）ので、CI でだけ付ける。
+        run: |
+          set -euo pipefail
+          xcodebuild archive \
+            -project "${PROJECT}" \
+            -scheme "${SCHEME}" \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -archivePath build/JPAgentManager.xcarchive \
+            -derivedDataPath build/DerivedData \
+            -clonedSourcePackagesDirPath build/SourcePackages \
+            ENABLE_HARDENED_RUNTIME=YES \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="${TEAM_ID}" \
+            MARKETING_VERSION="${{ steps.vars.outputs.version }}" \
+            CURRENT_PROJECT_VERSION="${{ steps.vars.outputs.build }}" \
+            -allowProvisioningUpdates
+
+      - name: アーカイブをエクスポート（.app 取得・Sparkle も再署名）
+        run: |
+          set -euo pipefail
+          xcodebuild -exportArchive \
+            -archivePath build/JPAgentManager.xcarchive \
+            -exportPath build/export \
+            -exportOptionsPlist ExportOptions.plist
+          ls -la build/export
+
+      - name: 署名とハードンドランタイムを確認（公証前）
+        run: |
+          set -euo pipefail
+          APP="build/export/${SCHEME}.app"
+          codesign --verify --deep --strict --verbose=2 "${APP}"
+          # codesign -dv は stderr に出す。flags に runtime が含まれることを確かめる。
+          INFO="$(codesign -dv "${APP}" 2>&1 || true)"
+          echo "${INFO}"
+          if ! echo "${INFO}" | grep -E '^CodeDirectory .*flags=.*runtime' >/dev/null; then
+            echo "::error::ハードンドランタイムが付いていません（公証に必須）"
+            exit 1
+          fi
+
+      - name: 公証（notarytool）
+        env:
+          ASC_API_KEY_P8: ${{ secrets.ASC_API_KEY_P8 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          set -euo pipefail
+          # 秘密鍵は作成前に権限を絞り、失敗時も終了時に必ず消す。
+          umask 077
+          trap 'rm -f build/AuthKey.p8' EXIT
+          echo -n "${ASC_API_KEY_P8}" | base64 --decode > build/AuthKey.p8
+          # 公証提出は .app を zip 化したものを送る（配布 zip とは別に作る）。
+          ditto -c -k --keepParent "build/export/${SCHEME}.app" build/notarize.zip
+          # 却下時に終了コードで落ちても結果 JSON を読めるよう、ここでは失敗を握る。
+          xcrun notarytool submit build/notarize.zip \
+            --key build/AuthKey.p8 \
+            --key-id "${ASC_KEY_ID}" \
+            --issuer "${ASC_ISSUER_ID}" \
+            --wait \
+            --timeout 30m \
+            --output-format json > build/notarize-result.json || true
+          cat build/notarize-result.json
+          # plutil は JSON も読める（jq 不要）。
+          SUB_ID="$(plutil -extract id raw -o - build/notarize-result.json 2>/dev/null || true)"
+          STATUS="$(plutil -extract status raw -o - build/notarize-result.json 2>/dev/null || true)"
+          if [ "${STATUS}" != "Accepted" ]; then
+            echo "::error::公証が Accepted になりませんでした（id=${SUB_ID:-不明}, status=${STATUS:-不明}）。ログを出力します。"
+            if [ -n "${SUB_ID}" ]; then
+              xcrun notarytool log "${SUB_ID}" \
+                --key build/AuthKey.p8 \
+                --key-id "${ASC_KEY_ID}" \
+                --issuer "${ASC_ISSUER_ID}" || true
+            fi
+            exit 1
+          fi
+
+      - name: ステープル（公証結果を .app に添付）
+        run: |
+          set -euo pipefail
+          xcrun stapler staple "build/export/${SCHEME}.app"
+          xcrun stapler validate "build/export/${SCHEME}.app"
+          spctl -a -vvv --type execute "build/export/${SCHEME}.app" || true
+
+      - name: 配布 zip を作成
+        id: pack
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          ZIP="${SCHEME}-${{ steps.vars.outputs.version }}.zip"
+          ditto -c -k --keepParent "build/export/${SCHEME}.app" "dist/${ZIP}"
+          echo "zip=${ZIP}" >> "$GITHUB_OUTPUT"
+          ls -la dist
+
+      - name: Sparkle ツールを取得
+        run: |
+          set -euo pipefail
+          curl -fL -o sparkle.tar.xz \
+            https://github.com/sparkle-project/Sparkle/releases/download/2.9.3/Sparkle-2.9.3.tar.xz
+          mkdir -p sparkle-tools && tar -xf sparkle.tar.xz -C sparkle-tools
+          ls -la sparkle-tools/bin
+
+      # Release 作成より前に生成する（失敗しても Re-run で Release の重複作成にならない）。
+      - name: appcast.xml を生成（Release アセットへ向ける）
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          # 秘密鍵は作成前に権限を絞り、失敗時も終了時に必ず消す。
+          umask 077
+          trap 'rm -f sparkle_priv.key' EXIT
+          printf '%s' "${SPARKLE_PRIVATE_KEY}" > sparkle_priv.key
+          ./sparkle-tools/bin/generate_appcast dist/ \
+            --ed-key-file sparkle_priv.key \
+            --download-url-prefix "https://github.com/${{ github.repository }}/releases/download/${{ steps.vars.outputs.tag }}/"
+          mkdir -p pages
+          cp dist/appcast.xml pages/appcast.xml
+          cat pages/appcast.xml
+
+      - name: GitHub Release を作成（zip 添付）
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.vars.outputs.tag }}
+          ZIP: ${{ steps.pack.outputs.zip }}
+        run: |
+          set -euo pipefail
+          # Re-run に備え、既にあれば zip を差し替え、無ければ作成する。
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release upload "${TAG}" "dist/${ZIP}" --clobber
+          else
+            gh release create "${TAG}" "dist/${ZIP}" \
+              --title "${TAG}" \
+              --target "${GITHUB_SHA}" \
+              --generate-notes
+          fi
+
+      - name: 公開中の appcast より古い版でないか確認
+        env:
+          BUILD: ${{ steps.vars.outputs.build }}
+        run: |
+          set -euo pipefail
+          # 古い版の Re-run が、新しい版の appcast を上書きするのを防ぐ。
+          URL="https://junpeiwada.github.io/JPAgentManager/appcast.xml"
+          if ! curl -fsSL -o published-appcast.xml "${URL}"; then
+            echo "公開中の appcast を取得できません（初回とみなして比較を飛ばします）"
+            exit 0
+          fi
+          # grep / sed が空振りしても pipefail で落ちないよう || true を付ける。
+          MAX="$( { grep -o '<sparkle:version>[0-9]*</sparkle:version>' published-appcast.xml || true; } \
+            | { sed -E 's/<[^>]*>//g' || true; } | sort -n | tail -n 1 || true)"
+          echo "公開中の最大 build=${MAX:-なし} / 今回の build=${BUILD}"
+          if [ -n "${MAX}" ] && [ "${MAX}" -gt "${BUILD}" ]; then
+            echo "::error::公開中の appcast（build=${MAX}）の方が新しいため、古い版（build=${BUILD}）で上書きしません。"
+            exit 1
+          fi
+
+      - name: appcast.xml だけを GitHub Pages へ publish
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./pages
+          keep_files: true

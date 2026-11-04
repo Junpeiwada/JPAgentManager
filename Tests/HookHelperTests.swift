@@ -3,10 +3,15 @@ import XCTest
 final class HookHelperTests: XCTestCase {
     private var dir: URL!
 
-    /// アプリ（テストホスト）に同梱されたヘルパー
-    private static let helperURL = Bundle.main.url(forAuxiliaryExecutable: "jpam-hook")!
+    /// ビルド成果物の置き場所（アプリ .app と同じフォルダ）にあるヘルパー。アプリには同梱しない
+    private static let helperURL = Bundle.main.bundleURL
+        .deletingLastPathComponent().appendingPathComponent("jpam-hook")
 
     override func setUpWithError() throws {
+        XCTAssertTrue(
+            FileManager.default.isExecutableFile(atPath: Self.helperURL.path),
+            "jpam-hook が \(Self.helperURL.path) にない（テストターゲットの依存で BUILT_PRODUCTS_DIR にビルドされるはず）"
+        )
         dir = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("hookhelper-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         let url = dir!

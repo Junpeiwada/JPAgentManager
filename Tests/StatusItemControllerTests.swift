@@ -42,4 +42,25 @@ final class StatusItemControllerTests: XCTestCase {
         let emphasized = StatusItemController.layout(waiting: 1, running: 1, total: 2, emphasized: true)
         XCTAssertEqual(emphasized.width - normal.width, 8, accuracy: 0.001)
     }
+
+    private func mouseEvent(_ type: NSEvent.EventType, modifiers: NSEvent.ModifierFlags = []) -> NSEvent? {
+        NSEvent.mouseEvent(with: type, location: .zero, modifierFlags: modifiers, timestamp: 0,
+                           windowNumber: 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1)
+    }
+
+    func test_右クリックはメニューを出す() {
+        XCTAssertTrue(StatusItemController.isMenuClick(mouseEvent(.rightMouseUp)))
+    }
+
+    func test_controlを押した左クリックはメニューを出す() {
+        XCTAssertTrue(StatusItemController.isMenuClick(mouseEvent(.leftMouseUp, modifiers: .control)))
+    }
+
+    func test_ただの左クリックはメニューを出さない() {
+        XCTAssertFalse(StatusItemController.isMenuClick(mouseEvent(.leftMouseUp)))
+    }
+
+    func test_イベントが無ければメニューを出さない() {
+        XCTAssertFalse(StatusItemController.isMenuClick(nil))
+    }
 }

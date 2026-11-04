@@ -1,0 +1,14 @@
+{
+  "name": "jpagentmanager",
+  "version": "0.1.0",
+  "private": true,
+  "description": "開発補助スクリプト用の package.json（アプリ本体は Swift/Xcode。npm の依存はない）。VSCode の NPM SCRIPTS パネルからリリースやビルドをクリックで実行するために置いている。",
+  "scripts": {
+    "release": "bash Scripts/release.sh",
+    "generate": "xcodegen generate",
+    "build": "xcodegen generate && xcodebuild -project JPAgentManager.xcodeproj -scheme JPAgentManager -configuration Debug -destination 'platform=macOS' -derivedDataPath build build",
+    "test": "xcodegen generate && xcodebuild -project JPAgentManager.xcodeproj -scheme JPAgentManager -configuration Debug -destination 'platform=macOS' -derivedDataPath build test",
+    "run": "open build/Build/Products/Debug/JPAgentManager.app",
+    "sample": "open build/Build/Products/Debug/JPAgentManager.app --args --sample"
+  }
+}

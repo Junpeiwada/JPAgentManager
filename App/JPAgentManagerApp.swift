@@ -21,6 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var errorCancellable: AnyCancellable?
     private var notifierCancellable: AnyCancellable?
     private var notifier: Notifier?
+    private var updater: UpdaterController?
     private let focusQueue = DispatchQueue(label: "Focuser", qos: .userInitiated)
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -63,6 +64,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             focus(session)
         }
         notifier.requestAuthorization()
+        // アプリ内更新（Sparkle）。--sample でも作る。所有は AppDelegate が持ち、model のクロージャからは weak で参照する
+        let updater = UpdaterController()
+        self.updater = updater
+        model.onCheckForUpdates = { [weak updater] in updater?.checkForUpdates() }
         panelModel = model
         statusItemController = StatusItemController(model: model)
 

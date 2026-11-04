@@ -16,6 +16,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - [Docs/要求仕様.md](Docs/要求仕様.md): 機能要求（FR-xxx）、非機能要求、未検証の前提（§8）
 - [Docs/設計メモ.md](Docs/設計メモ.md): 形態の検討経緯と実測メモ
 - [Docs/実装計画-P1.md](Docs/実装計画-P1.md): P1 のフェーズと進捗（更新は impl-plan スキルの手順で）。「注意点」に実測で分かった制約がある
+- [Docs/実装計画-自動更新.md](Docs/実装計画-自動更新.md): Sparkle による自動更新とリリースの仕組みのフェーズと進捗
+- [Docs/リリース手順.md](Docs/リリース手順.md): 一度だけの準備（鍵・Secrets・Pages）、毎回のリリース手順、つまずきやすい点
 
 ## ビルドとテスト
 
@@ -31,13 +33,16 @@ xcodebuild -scheme JPAgentManager -destination 'platform=macOS' test -only-testi
 ```
 
 - macOS 26 以上、サンドボックスなし・アドホック署名
+- ハードンドランタイムは `project.yml` では全構成 NO。公証に必須なので、CI の `xcodebuild archive` にコマンドラインで `ENABLE_HARDENED_RUNTIME=YES` を渡して付ける（アドホック署名のまま有効にすると Sparkle を読めず起動しない）
+- リリースは `Scripts/release.sh <版>`（例 `0.1.1`、`-y` で確認省略）。`project.yml` の `MARKETING_VERSION` を上げてコミット→タグ `v<版>`→今いるブランチとタグを push すると、CI（`.github/workflows/release.yml`）が署名・公証・GitHub Release・appcast（GitHub Pages）の更新まで行う。配布物の版は CI がタグ（`v` を外した値）で `MARKETING_VERSION` を上書きして決まる（`project.yml` の値は手元の記録用）。手動実行では入力した版でタグがビルドしたコミットに作られる。準備と手順は [Docs/リリース手順.md](Docs/リリース手順.md)
+- `package.json` は VSCode の NPM SCRIPTS パネルから実行するためだけに置いている（npm の依存はない）。`release`（引数なしなら版を対話で尋ねる）・`generate`・`build`・`test`・`run`・`sample`。`build`/`test` の出力先は `build/`
 - アプリを `--sample` 付きで起動すると、実データを読まずにサンプルデータ（`App/Model/SampleData.swift`）で表示する。見た目の確認用
 - テストは `TEST_HOST` でアプリ本体に載せて動く。`AppDelegate` は XCTest 中は何も作らない
 - `Spike/` はフェーズ1の検証用の使い捨てで、製品のビルドには入らない
 
 ## 構成
 
-ターゲットは3つ: アプリ `JPAgentManager`、フック用の補助プログラム `jpam-hook`（`HookHelper/`、アプリの `Contents/MacOS` に同梱）、テスト `JPAgentManagerTests`。
+ターゲットは3つ: アプリ `JPAgentManager`、フック用の補助プログラム `jpam-hook`（`HookHelper/`。アプリには同梱せず、テストのためだけにビルドされる）、テスト `JPAgentManagerTests`。
 
 データの流れ（アプリはどこにも書き込まない）:
 
@@ -52,7 +57,9 @@ xcodebuild -scheme JPAgentManager -destination 'platform=macOS' test -only-testi
 
 前面化（`Focuser`）は VSCode のセッション（`entrypoint == "claude-vscode"`）だけ。`code` CLI をフルパスで呼んで作業フォルダの窓を前に出す（タブまでは選べない）。CLI セッションは対象外。
 
-`App/Setup/HookInstaller.swift`・`App/Sources/HookEventReader.swift`・`App/Sources/ProcessScanner.swift` と `HookHelper/` は、状態の取得元をフックから sessions ファイルに切り替える前の実装で、いまのアプリからは呼ばれていない（テストだけ残っている）。
+`App/Setup/HookInstaller.swift`・`App/Sources/HookEventReader.swift`・`App/Sources/ProcessScanner.swift` と `HookHelper/` は、状態の取得元をフックから sessions ファイルに切り替える前の実装で、いまのアプリからは呼ばれていない（テストだけ残っている）。`jpam-hook` はアプリに同梱しないので、テストはビルド成果物の置き場所（アプリと同じフォルダ）から読む。
+
+自動更新は Sparkle（2.9.3 に固定、`exactVersion`。上げるときは `project.yml` と release.yml の `generate_appcast` の版を一緒に上げる。実装は `App/Actions/UpdaterController.swift`）。`App/Info.plist` の `SUFeedURL`（GitHub Pages の `appcast.xml`）・`SUPublicEDKey` で更新を受け、24 時間ごとに自動確認する（Debug では `SPUUpdaterDelegate` の `mayPerform` が背景の確認だけを止める。設定値は書き換えず、配布版には影響しない。手動は可）。手動の「更新を確認…」はパネルのフッターとメニューバーアイコンの右クリックメニューにある。鍵は JPAgentManager 専用でログインキーチェーンの account `JPAgentManager`。
 
 ## 前提にしている非公開の形式
 

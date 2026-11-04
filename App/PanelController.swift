@@ -8,9 +8,17 @@ final class PanelModel: ObservableObject {
     /// セッション情報を読めないときの短い注意文。無ければ nil
     @Published var lastError: String? = nil
     var onSelect: (Session) -> Void = { _ in }
+    /// 「更新を確認…」が押されたときの処理。AppDelegate が Sparkle へ結ぶ
+    var onCheckForUpdates: () -> Void = {}
 
     init(repos: [Repo]) {
         self.repos = repos
+    }
+
+    /// Info.plist から「v0.1.1」の形の版数を作る。取れなければ「—」
+    nonisolated static func versionLabel(info: [String: Any]?) -> String {
+        if let v = info?["CFBundleShortVersionString"] as? String, !v.isEmpty { return "v" + v }
+        return "—"
     }
 }
 
@@ -25,6 +33,8 @@ private struct PanelContent: View {
     @ObservedObject var model: PanelModel
     @ObservedObject var layout: PanelLayout
     let onSelect: (Session) -> Void
+    /// 「更新を確認…」用。パネルを閉じてから呼ぶ
+    let onCheckForUpdates: () -> Void
     /// 測った中身の高さが変わったことをコントローラーへ直接伝える
     let onContentHeightChange: () -> Void
     @State private var contentHeight: CGFloat = 0
@@ -73,6 +83,11 @@ private struct PanelContent: View {
             Button("設定…") {}
                 .disabled(true)
             Spacer()
+            Text(PanelModel.versionLabel(info: Bundle.main.infoDictionary))
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
+            Button("更新を確認…") { onCheckForUpdates() }
+            Spacer()
             Button("終了") { NSApp.terminate(nil) }
         }
         .buttonStyle(.plain)
@@ -117,18 +132,22 @@ final class PanelController: NSObject {
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.isReleasedWhenClosed = false
 
-        // 行のクリックは onSelect のあとに閉じる。self を後から結ぶため一度クロージャ越しにする
-        var closeAfterSelect: () -> Void = {}
+        // 行のクリック・更新の確認のあとに閉じる。self を後から結ぶため一度クロージャ越しにする
+        var closePanel: () -> Void = {}
         var contentHeightChanged: () -> Void = {}
         let layout = self.layout
         hosting = NSHostingView(rootView: PanelContent(model: model, layout: layout, onSelect: { session in
             model.onSelect(session)
-            closeAfterSelect()
+            closePanel()
+        }, onCheckForUpdates: {
+            // パネルを閉じる処理の後に回すため、次のランループで呼ぶ（確認ダイアログとパネルが重ならないように）
+            closePanel()
+            DispatchQueue.main.async { model.onCheckForUpdates() }
         }, onContentHeightChange: { contentHeightChanged() }))
         // 中身の intrinsicContentSize に合わせてウィンドウを伸縮させる
         hosting.sizingOptions = [.intrinsicContentSize]
         super.init()
-        closeAfterSelect = { [weak self] in self?.close() }
+        closePanel = { [weak self] in self?.close() }
         // 状態の反映を待ってから、1サイクル遅らせて高さを合わせる
         contentHeightChanged = { [weak self] in
             DispatchQueue.main.async { self?.fitToContent() }

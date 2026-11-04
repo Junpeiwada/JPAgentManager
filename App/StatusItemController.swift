@@ -7,6 +7,7 @@ import SwiftUI
 final class StatusItemController: NSObject {
     private let statusItem: NSStatusItem
     private let panelController: PanelController
+    private let model: PanelModel
     private var cancellable: AnyCancellable?
     private var lastCounts: (waiting: Int, running: Int, total: Int, emphasized: Bool)?
     // deinit（非隔離）から止めるため nonisolated(unsafe)。生成と停止以外では触らない
@@ -18,9 +19,12 @@ final class StatusItemController: NSObject {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         guard let button = statusItem.button else { return nil }
         panelController = PanelController(model: model, anchor: button)
+        self.model = model
         super.init()
         button.target = self
         button.action = #selector(togglePanel)
+        // 右クリックでもアクションを受ける
+        button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         updateImage(repos: model.repos)
         // repos が変わらなくても時間で強調に入るので、30秒ごとに判定し直す
         // メニュー操作などのイベント追跡中も止まらないよう .common モードに登録する
@@ -48,7 +52,41 @@ final class StatusItemController: NSObject {
 
     deinit { emphasisTimer?.invalidate() }
 
-    @objc private func togglePanel() { panelController.toggle() }
+    @objc private func togglePanel() {
+        if Self.isMenuClick(NSApp.currentEvent) { showMenu() } else { panelController.toggle() }
+    }
+
+    /// 右クリック、または control＋クリックならメニューを出す
+    nonisolated static func isMenuClick(_ event: NSEvent?) -> Bool {
+        guard let event else { return false }
+        return event.type == .rightMouseUp || (event.type == .leftMouseUp && event.modifierFlags.contains(.control))
+    }
+
+    /// パネルを閉じ、版数・更新を確認・終了のメニューを出す
+    private func showMenu() {
+        panelController.close()
+        let menu = NSMenu()
+        let version = NSMenuItem(title: "JPAgentManager " + PanelModel.versionLabel(info: Bundle.main.infoDictionary),
+                                 action: nil, keyEquivalent: "")
+        version.isEnabled = false
+        menu.addItem(version)
+        menu.addItem(.separator())
+        let check = NSMenuItem(title: "更新を確認…", action: #selector(checkForUpdates), keyEquivalent: "")
+        check.target = self
+        menu.addItem(check)
+        menu.addItem(.separator())
+        let quit = NSMenuItem(title: "終了", action: #selector(quit), keyEquivalent: "")
+        quit.target = self
+        menu.addItem(quit)
+        // menu を設定したままだと左クリックも奪うので、出し終えたら外す
+        statusItem.menu = menu
+        statusItem.button?.performClick(nil)
+        statusItem.menu = nil
+    }
+
+    // メニュー項目のアクションはメニューが閉じてから送られるので、同期で呼んでよい
+    @objc private func checkForUpdates() { model.onCheckForUpdates() }
+    @objc private func quit() { NSApp.terminate(nil) }
 
     /// 許可待ちが threshold 秒以上続いているセッションが1つでもあれば true（メニューバーの強調用）
     nonisolated static func needsEmphasis(repos: [Repo], now: Date, threshold: TimeInterval = 300) -> Bool {

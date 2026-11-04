@@ -24,5 +24,13 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://junpeiwada.github.io/JPAgentManager/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>OSZaKH/zo++T9jQh5046B+oe1RIoLlmTuQdS9gbbCBE=</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>
