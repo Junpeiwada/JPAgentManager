@@ -1,0 +1,5 @@
+{"type":"ai-title","aiTitle":"壊れた行の前","sessionId":"s2"}
+{this is not json "ai-title"
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"tool_use","name":"Bash","input":{"command":"ls -la\necho done"}}]}}
+{"type":"assistant","message":"文字列でcontentが無い"}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"終わりました"}]}}

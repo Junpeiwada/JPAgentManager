@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 456" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F6368"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <text x="24" y="36" font-size="18" font-weight="bold" fill="#202124">行をクリックしたときの前面化（FR-301〜304）</text>
+
+  <!-- 参加者 -->
+  <rect x="40" y="56" width="160" height="40" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="120" y="81" font-size="14" fill="#202124" text-anchor="middle">JPAgentManager</text>
+  <rect x="260" y="56" width="160" height="40" rx="6" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
+  <text x="340" y="81" font-size="14" fill="#202124" text-anchor="middle">code（フルパス）</text>
+  <rect x="480" y="56" width="160" height="40" rx="6" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
+  <text x="560" y="81" font-size="14" fill="#202124" text-anchor="middle">VSCode</text>
+  <rect x="700" y="56" width="160" height="40" rx="6" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
+  <text x="780" y="81" font-size="14" fill="#202124" text-anchor="middle">Claude 拡張</text>
+
+  <line x1="120" y1="96" x2="120" y2="352" stroke="#80868B" stroke-dasharray="6 4"/>
+  <line x1="340" y1="96" x2="340" y2="352" stroke="#80868B" stroke-dasharray="6 4"/>
+  <line x1="560" y1="96" x2="560" y2="352" stroke="#80868B" stroke-dasharray="6 4"/>
+  <line x1="780" y1="96" x2="780" y2="352" stroke="#80868B" stroke-dasharray="6 4"/>
+
+  <!-- 1 -->
+  <text x="20" y="140" font-size="12" fill="#5F6368">1</text>
+  <line x1="120" y1="136" x2="336" y2="136" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="228" y="128" font-size="12" fill="#5F6368" text-anchor="middle">code &lt;作業フォルダ&gt;</text>
+  <!-- 2 -->
+  <text x="20" y="188" font-size="12" fill="#5F6368">2</text>
+  <line x1="340" y1="184" x2="556" y2="184" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="448" y="176" font-size="12" fill="#5F6368" text-anchor="middle">そのフォルダの窓を前面へ</text>
+  <text x="448" y="202" font-size="12" fill="#D93025" text-anchor="middle">2窓で同じフォルダなら？（要検証）</text>
+  <!-- 3 -->
+  <text x="20" y="252" font-size="12" fill="#5F6368">3</text>
+  <line x1="120" y1="248" x2="556" y2="248" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="338" y="240" font-size="12" fill="#5F6368" text-anchor="middle">open vscode://anthropic.claude-code/open?session=&lt;id&gt;</text>
+  <text x="338" y="266" font-size="12" fill="#D93025" text-anchor="middle">最後に前面にした窓へ届くか（要検証）</text>
+  <!-- 4 -->
+  <text x="20" y="316" font-size="12" fill="#5F6368">4</text>
+  <line x1="560" y1="312" x2="776" y2="312" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="668" y="304" font-size="12" fill="#5F6368" text-anchor="middle">そのセッションのタブを表示</text>
+  <text x="668" y="330" font-size="12" fill="#D93025" text-anchor="middle">既存タブか、新しいタブか（要検証）</text>
+
+  <!-- 失敗時 -->
+  <rect x="40" y="376" width="820" height="56" rx="8" fill="#FCE8E6" stroke="#D93025" stroke-width="2"/>
+  <text x="56" y="400" font-size="12" fill="#202124">失敗したとき（フォルダが無い・VSCode が無い・URI が効かない）: 理由をパネルに出し、</text>
+  <text x="56" y="420" font-size="12" fill="#202124">フォルダを開くだけにとどめる（FR-303）。2〜4 が成り立たなければ「窓を前に出すだけ」に下げる（§8）</text>
+</svg>

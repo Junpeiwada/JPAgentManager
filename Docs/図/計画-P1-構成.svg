@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" font-family="sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5F6368"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <text x="24" y="36" font-size="18" font-weight="bold" fill="#202124">データの流れ（P1・1台の中だけ）</text>
+
+  <!-- 外のもの / 既にあるもの -->
+  <rect x="24" y="72" width="200" height="64" rx="8" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
+  <text x="124" y="100" font-size="14" fill="#202124" text-anchor="middle">VSCode の Claude タブ</text>
+  <text x="124" y="120" font-size="12" fill="#5F6368" text-anchor="middle">claude プロセス 1本 / タブ</text>
+
+  <rect x="24" y="168" width="200" height="64" rx="8" fill="#F1F3F4" stroke="#80868B" stroke-width="2"/>
+  <text x="124" y="196" font-size="14" fill="#202124" text-anchor="middle">sessions ファイル</text>
+  <text x="124" y="216" font-size="12" fill="#5F6368" text-anchor="middle">~/.claude/sessions/PID.json</text>
+
+  <rect x="24" y="264" width="200" height="64" rx="8" fill="#F1F3F4" stroke="#80868B" stroke-width="2"/>
+  <text x="124" y="292" font-size="14" fill="#202124" text-anchor="middle">会話ログ jsonl</text>
+  <text x="124" y="312" font-size="12" fill="#5F6368" text-anchor="middle">~/.claude/projects/…（読むだけ）</text>
+
+  <rect x="296" y="320" width="200" height="64" rx="8" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
+  <text x="396" y="348" font-size="14" fill="#202124" text-anchor="middle">code CLI</text>
+  <text x="396" y="368" font-size="12" fill="#5F6368" text-anchor="middle">code &lt;作業フォルダ&gt;</text>
+
+  <!-- アプリ（入れ子） -->
+  <rect x="560" y="56" width="384" height="368" rx="10" fill="none" stroke="#3B6FD8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="576" y="80" font-size="14" font-weight="bold" fill="#3B6FD8">JPAgentManager.app</text>
+
+  <rect x="576" y="96" width="160" height="48" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="656" y="116" font-size="14" fill="#202124" text-anchor="middle">SessionRegistry</text>
+  <text x="656" y="134" font-size="12" fill="#5F6368" text-anchor="middle">PID の生存確認</text>
+  <rect x="576" y="176" width="160" height="48" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="656" y="205" font-size="14" fill="#202124" text-anchor="middle">TranscriptReader</text>
+  <rect x="576" y="256" width="160" height="48" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="656" y="278" font-size="14" fill="#202124" text-anchor="middle">GitInfo</text>
+  <text x="656" y="296" font-size="12" fill="#5F6368" text-anchor="middle">git を実行</text>
+
+  <rect x="776" y="176" width="152" height="64" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="852" y="204" font-size="14" fill="#202124" text-anchor="middle">SessionStore</text>
+  <text x="852" y="224" font-size="12" fill="#5F6368" text-anchor="middle">状態を決める</text>
+  <rect x="776" y="320" width="152" height="64" rx="6" fill="#E8F0FE" stroke="#3B6FD8" stroke-width="2"/>
+  <text x="852" y="348" font-size="14" fill="#202124" text-anchor="middle">パネル・通知</text>
+  <text x="852" y="368" font-size="12" fill="#5F6368" text-anchor="middle">メニューバー</text>
+
+  <text x="576" y="408" font-size="12" fill="#5F6368">libproc はフェーズ4以降、窓の情報にも使う予定</text>
+
+  <!-- タブ → sessions ファイル -->
+  <line x1="124" y1="136" x2="124" y2="164" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="132" y="156" font-size="12" fill="#5F6368">自分で書く</text>
+
+  <!-- sessions ファイル → SessionRegistry -->
+  <path d="M224,200 H520 V120 H572" fill="none" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="232" y="190" font-size="12" fill="#5F6368">status・sessionId・cwd（読むだけ）</text>
+
+  <!-- ログ → TranscriptReader -->
+  <path d="M224,296 H540 V200 H572" fill="none" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="232" y="288" font-size="12" fill="#5F6368">ai-title・last-prompt・tool_use</text>
+
+  <!-- アプリ内 -->
+  <line x1="736" y1="120" x2="772" y2="190" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="736" y1="200" x2="772" y2="204" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="736" y1="280" x2="772" y2="226" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="852" y1="240" x2="852" y2="316" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 前面化 -->
+  <line x1="776" y1="352" x2="500" y2="352" stroke="#5F6368" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="640" y="342" font-size="12" fill="#5F6368" text-anchor="middle">行クリックで窓を前面へ</text>
+
+  <!-- 凡例 -->
+  <rect x="24" y="448" width="16" height="16" fill="#E8F0FE" stroke="#3B6FD8"/>
+  <text x="48" y="461" font-size="12" fill="#5F6368">新しく作る</text>
+  <rect x="136" y="448" width="16" height="16" fill="#F1F3F4" stroke="#80868B"/>
+  <text x="160" y="461" font-size="12" fill="#5F6368">既にある（読むだけ）</text>
+  <rect x="304" y="448" width="16" height="16" fill="#FEF3E2" stroke="#E08A00"/>
+  <text x="328" y="461" font-size="12" fill="#5F6368">外のもの</text>
+</svg>

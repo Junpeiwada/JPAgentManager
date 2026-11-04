@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 案3: 2x2 のブリックを斜め上から見て、その上にタクトを置いた記号的な案。16px でも形が崩れにくい -->
+  <title>ブリックとタクト</title>
+  <defs>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="130%"><feGaussianBlur in="SourceAlpha" stdDeviation="10"/><feOffset dy="6"/><feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="7"/><feOffset dy="9"/><feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <clipPath id="bgclip"><rect x="100" y="100" width="824" height="824" rx="185"/></clipPath>
+    <linearGradient id="vF6BE2C" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8CC5A"/><stop offset=".45" stop-color="#F6BE2C"/><stop offset="1" stop-color="#D4A326"/></linearGradient><linearGradient id="vF7C33D" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F9D068"/><stop offset=".45" stop-color="#F7C33D"/><stop offset="1" stop-color="#D4A834"/></linearGradient><linearGradient id="v2F6FD6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5D8FDF"/><stop offset=".45" stop-color="#2F6FD6"/><stop offset="1" stop-color="#285FB8"/></linearGradient>
+  </defs>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#v2F6FD6)" filter="url(#drop)"/>
+  <g clip-path="url(#bgclip)">
+    <g filter="url(#soft)">
+<rect x="262" y="302" width="500" height="500" rx="44" fill="#AC851F"/><rect x="262" y="262" width="500" height="500" rx="44" fill="url(#vF6BE2C)" stroke="#B88E21" stroke-width="4"/><rect x="282" y="276" width="460" height="9" rx="4.5" fill="#FFFFFF" opacity=".4"/><circle cx="387" cy="403" r="80" fill="#AC851F"/><circle cx="387" cy="387" r="80" fill="url(#vF7C33D)" stroke="#C09422" stroke-width="3"/><ellipse cx="363" cy="357" rx="30" ry="14" fill="#FFFFFF" opacity=".55" transform="rotate(-25 363 357)"/><circle cx="637" cy="403" r="80" fill="#AC851F"/><circle cx="637" cy="387" r="80" fill="url(#vF7C33D)" stroke="#C09422" stroke-width="3"/><ellipse cx="613" cy="357" rx="30" ry="14" fill="#FFFFFF" opacity=".55" transform="rotate(-25 613 357)"/><circle cx="387" cy="653" r="80" fill="#AC851F"/><circle cx="387" cy="637" r="80" fill="url(#vF7C33D)" stroke="#C09422" stroke-width="3"/><ellipse cx="363" cy="607" rx="30" ry="14" fill="#FFFFFF" opacity=".55" transform="rotate(-25 363 607)"/><circle cx="637" cy="653" r="80" fill="#AC851F"/><circle cx="637" cy="637" r="80" fill="url(#vF7C33D)" stroke="#C09422" stroke-width="3"/><ellipse cx="613" cy="607" rx="30" ry="14" fill="#FFFFFF" opacity=".55" transform="rotate(-25 613 607)"/><g filter="url(#soft)"><line x1="236" y1="836" x2="826" y2="226" stroke="#F6F5F1" stroke-width="24" stroke-linecap="round"/><line x1="236" y1="836" x2="826" y2="226" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" transform="translate(-2 -2)"/><line x1="236" y1="836" x2="313" y2="757" stroke="#C98A4E" stroke-width="55" stroke-linecap="round"/></g>
+    </g>
+  </g>
+</svg>
