@@ -12,10 +12,12 @@ struct ShelfView: View {
     private var sessions: [Session] { repos.flatMap(\.sessions) }
 
     var body: some View {
-        // セッションが0件のリポジトリは出さない。残りを待機だけ（折りたたみ対象）とそれ以外に1回で振り分ける
+        // セッションが0件のリポジトリは出さない。残りを待機だけ（折りたたみ対象）とそれ以外に振り分ける。
+        // 未確認の完了を含むリポジトリは、隠れないよう折りたたまない（FR-111）
         let shown = repos.filter { !$0.sessions.isEmpty }
-        let idleRepos = shown.filter(Sorting.isIdleOnly)
-        let activeRepos = shown.filter { !Sorting.isIdleOnly($0) }
+        let isFolded: (Repo) -> Bool = { Sorting.isIdleOnly($0) && !$0.sessions.contains(where: \.completedUnseen) }
+        let idleRepos = shown.filter(isFolded)
+        let activeRepos = shown.filter { !isFolded($0) }
         return VStack(alignment: .leading, spacing: 10) {
             header
             ForEach(activeRepos) { folder($0) }
@@ -44,6 +46,10 @@ struct ShelfView: View {
             let running = sessions.filter { $0.status == .running }.count
             summaryCapsule("許可待ち \(waiting)", dot: Theme.color(for: .waiting))
             summaryCapsule("実行中 \(running)", dot: Theme.color(for: .running))
+            let completed = sessions.filter(\.completedUnseen).count
+            if completed > 0 {
+                summaryCapsule("完了 \(completed)", dot: Theme.completedColor)
+            }
             summaryCapsule("タブ \(sessions.count)", dot: nil)
         }
         .padding(.horizontal, 4)

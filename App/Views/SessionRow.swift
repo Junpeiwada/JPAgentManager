@@ -15,7 +15,9 @@ struct SessionRow: View {
             : NSColor(red: 0.64, green: 0.35, blue: 0.0, alpha: 1)
     })
 
-    private var isDimmed: Bool { session.status == .idle || session.status == .empty }
+    private var isDimmed: Bool {
+        !session.completedUnseen && (session.status == .idle || session.status == .empty)
+    }
 
     /// 改行を空白に置き換えて1行にする
     private static func oneLine(_ text: String) -> String {
@@ -75,7 +77,10 @@ struct SessionRow: View {
     @ViewBuilder
     private var rowBackground: some View {
         let shape = RoundedRectangle(cornerRadius: Theme.rowCornerRadius, style: .continuous)
-        if session.status == .waiting {
+        if session.completedUnseen {
+            shape.fill(Theme.completedColor.opacity(Theme.completedRowFillOpacity))
+                .overlay(shape.fill(Color.primary.opacity(hovering ? 0.04 : 0)))
+        } else if session.status == .waiting {
             shape.fill(Theme.color(for: .waiting).opacity(Theme.waitingRowFillOpacity))
                 .overlay(shape.fill(Color.primary.opacity(hovering ? 0.04 : 0)))
         } else {

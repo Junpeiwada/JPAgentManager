@@ -30,6 +30,7 @@ struct Session: Identifiable, Hashable {
     var lastPrompt: String?   // 最後に送った指示（許可待ちの行だけ表示）
     var waitingFor: String? = nil  // 待ちの理由（"permission prompt" / "input needed"）。waiting のときだけ
     var entrypoint: String? = nil  // 起動元（"claude-vscode" など）。前面化できるのは claude-vscode だけ
+    var completedUnseen: Bool = false  // 実行中→待機に変わり、まだ行をクリックしていない（FR-111）
 
     /// 経過時間の表示。実行中だけ「H:MM」（例 0:45、1:05）。
     /// それ以外は 60秒未満「今」、60分未満「N分」、24時間未満「N時間」、それ以上「N日」。負の値は「今」

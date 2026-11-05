@@ -9,7 +9,7 @@ final class StatusItemController: NSObject {
     private let panelController: PanelController
     private let model: PanelModel
     private var cancellable: AnyCancellable?
-    private var lastCounts: (waiting: Int, running: Int, total: Int, emphasized: Bool)?
+    private var lastCounts: (waiting: Int, running: Int, completed: Int, total: Int, emphasized: Bool)?
     // deinit（非隔離）から止めるため nonisolated(unsafe)。生成と停止以外では触らない
     nonisolated(unsafe) private var emphasisTimer: Timer?
     private var currentRepos: [Repo] = []
@@ -62,9 +62,9 @@ final class StatusItemController: NSObject {
         return event.type == .rightMouseUp || (event.type == .leftMouseUp && event.modifierFlags.contains(.control))
     }
 
-    /// パネルを閉じ、版数・更新を確認・終了のメニューを出す
+    /// パネルを閉じ（分離中なら残す）、版数・更新を確認・終了のメニューを出す
     private func showMenu() {
-        panelController.close()
+        if !panelController.isDetached { panelController.close() }
         let menu = NSMenu()
         let version = NSMenuItem(title: "JPAgentManager " + PanelModel.versionLabel(info: Bundle.main.infoDictionary),
                                  action: nil, keyEquivalent: "")
@@ -101,11 +101,13 @@ final class StatusItemController: NSObject {
         let sessions = repos.flatMap(\.sessions)
         let counts = (waiting: sessions.filter { $0.status == .waiting }.count,
                       running: sessions.filter { $0.status == .running }.count,
+                      completed: sessions.filter(\.completedUnseen).count,
                       total: sessions.count,
                       emphasized: Self.needsEmphasis(repos: repos, now: Date()))
         if let last = lastCounts, last == counts { return }
         lastCounts = counts
-        statusItem.button?.image = Self.makeImage(waiting: counts.waiting, running: counts.running, total: counts.total,
+        statusItem.button?.image = Self.makeImage(waiting: counts.waiting, running: counts.running,
+                                                   completed: counts.completed, total: counts.total,
                                                    emphasized: counts.emphasized)
     }
 
@@ -120,13 +122,16 @@ final class StatusItemController: NSObject {
     }
 
     /// 画像の全体幅と、各項目（点+文字）の x 方向の範囲を求める。描画はこの結果に従う。
-    /// emphasized のときは許可待ちの項目の左右に pad の余白が付き、後続の項目はその分ずれる
-    nonisolated static func layout(waiting: Int, running: Int, total: Int, emphasized: Bool) -> (width: CGFloat, items: [CGRect]) {
-        let texts: [(hasDot: Bool, text: String, font: NSFont)] = [
+    /// emphasized のときは許可待ちの項目の左右に pad の余白が付き、後続の項目はその分ずれる。
+    /// 未確認の完了（completed）は 1 件以上のときだけ、実行中の後ろに項目を足す
+    nonisolated static func layout(waiting: Int, running: Int, completed: Int = 0, total: Int,
+                                   emphasized: Bool) -> (width: CGFloat, items: [CGRect]) {
+        var texts: [(hasDot: Bool, text: String, font: NSFont)] = [
             (true, "\(waiting)", countFont),
             (true, "\(running)", countFont),
-            (false, "/ \(total)", totalFont),
         ]
+        if completed > 0 { texts.append((true, "\(completed)", countFont)) }
+        texts.append((false, "/ \(total)", totalFont))
         let pad: CGFloat = emphasized ? 4 : 0  // 下地の左右の余白
         var x = pad
         var rects: [CGRect] = []
@@ -139,18 +144,20 @@ final class StatusItemController: NSObject {
         return (x, rects)
     }
 
-    /// 「橙の点+許可待ち数 / 青の点+実行中数 / / タブ数」をカラーで描く。
+    /// 「橙の点+許可待ち数 / 青の点+実行中数 /（緑の点+未確認の完了数）/ / タブ数」をカラーで描く。
     /// emphasized のときは橙の点と数字の後ろに橙の角丸の下地を敷き、数字を白にする。
     /// 描画クロージャは表示のたびに呼ばれるので、NSColor.labelColor がメニューバーの外観に追従する
-    private static func makeImage(waiting: Int, running: Int, total: Int, emphasized: Bool) -> NSImage {
-        // 点の色は Theme.color(for:) と合わせる
-        let items: [(NSColor?, String, NSFont)] = [
+    private static func makeImage(waiting: Int, running: Int, completed: Int, total: Int, emphasized: Bool) -> NSImage {
+        // 点の色は Theme と合わせる。項目の並びは layout と同じにする
+        var items: [(NSColor?, String, NSFont)] = [
             (NSColor(Theme.color(for: .waiting)), "\(waiting)", countFont),
             (NSColor(Theme.color(for: .running)), "\(running)", countFont),
-            (nil, "/ \(total)", totalFont),
         ]
+        if completed > 0 { items.append((NSColor(Theme.completedColor), "\(completed)", countFont)) }
+        items.append((nil, "/ \(total)", totalFont))
         let pad: CGFloat = emphasized ? 4 : 0
-        let (width, frames) = layout(waiting: waiting, running: running, total: total, emphasized: emphasized)
+        let (width, frames) = layout(waiting: waiting, running: running, completed: completed, total: total,
+                                     emphasized: emphasized)
         let image = NSImage(size: NSSize(width: ceil(width), height: 18), flipped: false) { rect in
             for (index, (color, text, f)) in items.enumerated() {
                 var x = frames[index].minX

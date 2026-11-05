@@ -8,10 +8,11 @@ enum SampleData {
     static func repos(now: Date = Date()) -> [Repo] {
         func ago(minutes: Double) -> Date { now.addingTimeInterval(-minutes * 60) }
         func session(_ key: String, _ repo: String, _ status: SessionStatus, minutes: Double,
-                     title: String?, action: String? = nil, prompt: String? = nil) -> Session {
+                     title: String?, action: String? = nil, prompt: String? = nil,
+                     unseen: Bool = false) -> Session {
             Session(id: key, pid: nil, cwd: "\(root)/\(repo)", status: status,
                     statusSince: ago(minutes: minutes), title: title,
-                    lastAction: action, lastPrompt: prompt)
+                    lastAction: action, lastPrompt: prompt, completedUnseen: unseen)
         }
         func repo(_ name: String, branch: String?, _ sessions: [Session]) -> Repo {
             Repo(id: "\(root)/\(name)", name: name, branch: branch, sessions: sessions)
@@ -28,7 +29,7 @@ enum SampleData {
                         action: "Edit: src/filter/config.ts"),
                 session("sample-photo-3", "PhotoSorter", .idle, minutes: 25,
                         title: "README の手順を新UIに合わせて更新",
-                        action: "返答済み（Write: README.md）"),
+                        action: "返答済み（Write: README.md）", unseen: true),
             ]),
             repo("Notebook", branch: "main", [
                 session("sample-notebook-1", "Notebook", .running, minutes: 12,

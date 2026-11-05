@@ -56,6 +56,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         model.onSelect = focus
         notifier.onActivate = { [weak model, weak notifier] sessionID in
+            // 完了通知のクリックも確認とみなす
+            model?.markSeen(sessionID)
             guard let session = model?.repos.flatMap(\.sessions).first(where: { $0.id == sessionID }) else {
                 notifier?.notifyFailure("セッションが見つかりません（閉じられた可能性があります）",
                                         fallback: { model?.lastError = $0 })
@@ -77,7 +79,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // SessionStore の repos をパネルへ流し込む
             cancellable = store.$repos
                 .receive(on: DispatchQueue.main)
-                .sink { [weak model] repos in model?.repos = repos }
+                .sink { [weak model] repos in model?.update(repos: repos) }
             errorCancellable = store.$lastError
                 .receive(on: DispatchQueue.main)
                 .sink { [weak model] message in model?.lastError = message }

@@ -8,6 +8,7 @@ struct StatusCapsule: View {
     private var label: String {
         // 入力待ち（input needed）と許可待ちを区別する
         if session.status == .waiting, session.waitingFor == "input needed" { return "入力待ち" }
+        if session.completedUnseen { return "完了" }
         return session.status.label
     }
 
@@ -30,6 +31,7 @@ struct StatusCapsule: View {
     }
 
     private var textColor: Color {
+        if session.completedUnseen { return .white }
         switch session.status {
         case .waiting: return .white
         case .running: return Theme.color(for: .running)
@@ -40,6 +42,15 @@ struct StatusCapsule: View {
 
     @ViewBuilder
     private var background: some View {
+        if session.completedUnseen {
+            Capsule().fill(Theme.completedColor)
+        } else {
+            statusBackground
+        }
+    }
+
+    @ViewBuilder
+    private var statusBackground: some View {
         switch session.status {
         case .waiting:
             Capsule().fill(Theme.color(for: .waiting))

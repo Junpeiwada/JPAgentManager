@@ -67,4 +67,10 @@ enum Theme {
     static let waitingRowFillOpacity: Double = 0.14
     /// tinted カプセルの塗り
     static let capsuleFillOpacity: Double = 0.14
+
+    // MARK: 未確認の完了（FR-111）
+    /// 未確認の完了の色（行の塗り・カプセル・メニューバーの点）
+    static let completedColor = Color.green
+    /// 未確認の完了の行の塗り
+    static let completedRowFillOpacity: Double = 0.16
 }

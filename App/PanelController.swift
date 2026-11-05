@@ -10,9 +10,32 @@ final class PanelModel: ObservableObject {
     var onSelect: (Session) -> Void = { _ in }
     /// 「更新を確認…」が押されたときの処理。AppDelegate が Sparkle へ結ぶ
     var onCheckForUpdates: () -> Void = {}
+    /// 未確認の完了（FR-111）
+    private var completionTracker = CompletionTracker()
 
     init(repos: [Repo]) {
         self.repos = repos
+    }
+
+    /// SessionStore の結果を受け取り、未確認の完了の印を付けて表示へ流す
+    func update(repos newRepos: [Repo]) {
+        completionTracker.update(repos: newRepos)
+        repos = CompletionTracker.apply(completionTracker.unseen, to: newRepos)
+    }
+
+    /// そのセッションの完了を確認済みにする（行や通知のクリック）
+    func markSeen(_ sessionID: String) {
+        completionTracker.markSeen(sessionID)
+        guard repos.contains(where: { $0.sessions.contains { $0.id == sessionID && $0.completedUnseen } }) else { return }
+        repos = repos.map { repo in
+            var repo = repo
+            repo.sessions = repo.sessions.map { s in
+                var s = s
+                if s.id == sessionID { s.completedUnseen = false }
+                return s
+            }
+            return repo
+        }
     }
 
     /// Info.plist から「v0.1.1」の形の版数を作る。取れなければ「—」
@@ -22,10 +45,52 @@ final class PanelModel: ObservableObject {
     }
 }
 
-/// パネルの高さの上限。開くたびに画面の可視領域から更新する
+/// パネルの高さの上限と、分離の状態。高さの上限は開くたびに画面の可視領域から更新する
 @MainActor
 private final class PanelLayout: ObservableObject {
     @Published var maxHeight: CGFloat = 600
+    /// グリップを掴んで剥がした状態か。閉じると false に戻る
+    @Published var isDetached = false
+    /// 分離したウィンドウを常に手前に出すか。UserDefaults に覚える
+    @Published var alwaysOnTop = true
+}
+
+/// 掴んで動かすとウィンドウを動かす NSView。動かし始めた瞬間に onDragStart を呼ぶ
+private final class DragHandleView: NSView {
+    var onDragStart: () -> Void = {}
+    private var downEvent: NSEvent?
+    /// これ以上動かしたらドラッグとみなす距離（クリックの手ぶれと区別する）
+    private static let threshold: CGFloat = 4
+
+    // パネルがキーでなくても最初のクリックで掴めるようにする
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+    override var mouseDownCanMoveWindow: Bool { false }
+    override func resetCursorRects() { addCursorRect(bounds, cursor: .openHand) }
+
+    override func mouseDown(with event: NSEvent) { downEvent = event }
+
+    override func mouseDragged(with event: NSEvent) {
+        guard let down = downEvent else { return }
+        let dx = event.locationInWindow.x - down.locationInWindow.x
+        let dy = event.locationInWindow.y - down.locationInWindow.y
+        guard hypot(dx, dy) >= Self.threshold else { return }
+        downEvent = nil
+        onDragStart()
+        // 以降の追従はウィンドウサーバーに任せる（マウスを離すまで戻らない）
+        window?.performDrag(with: down)
+    }
+
+    override func mouseUp(with event: NSEvent) { downEvent = nil }
+}
+
+private struct WindowDragHandle: NSViewRepresentable {
+    let onDragStart: () -> Void
+    func makeNSView(context: Context) -> DragHandleView {
+        let view = DragHandleView()
+        view.onDragStart = onDragStart
+        return view
+    }
+    func updateNSView(_ view: DragHandleView, context: Context) { view.onDragStart = onDragStart }
 }
 
 /// パネルの中身。書類棚をスクロール可能に包み、下にフッターを置く
@@ -37,15 +102,23 @@ private struct PanelContent: View {
     let onCheckForUpdates: () -> Void
     /// 測った中身の高さが変わったことをコントローラーへ直接伝える
     let onContentHeightChange: () -> Void
+    /// グリップを掴んで動かし始めたとき（分離する）
+    let onGripDrag: () -> Void
+    /// 分離中の × が押されたとき
+    let onCloseDetached: () -> Void
+    /// 分離中のピン（常に手前）が押されたとき
+    let onToggleAlwaysOnTop: () -> Void
     @State private var contentHeight: CGFloat = 0
 
+    private static let headerHeight: CGFloat = 22
     private static let footerHeight: CGFloat = 40
 
     var body: some View {
         // 棚の実寸を測り、上限までは中身に合わせ、超えたらスクロールにする
-        let limit = max(layout.maxHeight - Self.footerHeight, 1)
+        let limit = max(layout.maxHeight - Self.headerHeight - Self.footerHeight, 1)
         let shown = min(max(contentHeight, 1), limit)
         VStack(spacing: 0) {
+            header
             if let message = model.lastError {
                 Text(message)
                     .font(.system(size: 11))
@@ -75,6 +148,44 @@ private struct PanelContent: View {
             Color.clear.glassEffect(.regular, in: RoundedRectangle(cornerRadius: PanelController.cornerRadius))
         }
         .clipShape(RoundedRectangle(cornerRadius: PanelController.cornerRadius))
+    }
+
+    /// 上端の帯。タイトルバーのように帯全体（ボタンを除く）を掴んで動かすと分離する。
+    /// 分離中だけ左にピン、右に × を出す
+    private var header: some View {
+        ZStack {
+            // 帯の幅いっぱいに掴む場所を敷く。ボタンはこの上に重ね、隙間のクリックはここへ届く
+            WindowDragHandle(onDragStart: onGripDrag)
+                .help(layout.isDetached ? "掴んで移動" : "掴んで動かすと切り離せます")
+            Capsule()
+                .fill(Color.secondary.opacity(0.45))
+                .frame(width: 64, height: 5)
+                .padding(.top, 4)
+                .allowsHitTesting(false)
+            if layout.isDetached {
+                HStack(spacing: 0) {
+                    Button { onToggleAlwaysOnTop() } label: {
+                        Image(systemName: layout.alwaysOnTop ? "pin.fill" : "pin")
+                            .frame(width: 22, height: 22)
+                            .contentShape(Rectangle())
+                    }
+                    .help(layout.alwaysOnTop ? "常に手前に表示：オン" : "常に手前に表示：オフ")
+                    Spacer(minLength: 0)
+                    Button { onCloseDetached() } label: {
+                        Image(systemName: "xmark")
+                            .frame(width: 22, height: 22)
+                            .contentShape(Rectangle())
+                    }
+                    .help("閉じる")
+                }
+                .buttonStyle(.plain)
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 12)
+                .padding(.top, 4)
+            }
+        }
+        .frame(width: Theme.panelContentWidth, height: Self.headerHeight)
     }
 
     private var footer: some View {
@@ -119,6 +230,10 @@ final class PanelController: NSObject {
     private var lastClosedAt: Date = .distantPast
 
     var isVisible: Bool { panel.isVisible }
+    /// グリップを掴んで剥がした状態か
+    var isDetached: Bool { layout.isDetached }
+
+    private static let alwaysOnTopKey = "DetachedPanelAlwaysOnTop"
 
     init(model: PanelModel, anchor: NSStatusBarButton) {
         self.anchor = anchor
@@ -131,23 +246,39 @@ final class PanelController: NSObject {
         panel.level = .statusBar
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.isReleasedWhenClosed = false
+        // 分離中に他のアプリへ移っても消えないようにする
+        panel.hidesOnDeactivate = false
 
-        // 行のクリック・更新の確認のあとに閉じる。self を後から結ぶため一度クロージャ越しにする
-        var closePanel: () -> Void = {}
+        // 行のクリック・更新の確認のあとに閉じる（分離中は閉じない）。self を後から結ぶため一度クロージャ越しにする
+        var closeIfAttached: () -> Void = {}
         var contentHeightChanged: () -> Void = {}
+        var detach: () -> Void = {}
+        var closeDetached: () -> Void = {}
+        var toggleAlwaysOnTop: () -> Void = {}
         let layout = self.layout
+        layout.alwaysOnTop = UserDefaults.standard.object(forKey: Self.alwaysOnTopKey) as? Bool ?? true
         hosting = NSHostingView(rootView: PanelContent(model: model, layout: layout, onSelect: { session in
+            model.markSeen(session.id)
             model.onSelect(session)
-            closePanel()
+            closeIfAttached()
         }, onCheckForUpdates: {
             // パネルを閉じる処理の後に回すため、次のランループで呼ぶ（確認ダイアログとパネルが重ならないように）
-            closePanel()
+            closeIfAttached()
             DispatchQueue.main.async { model.onCheckForUpdates() }
-        }, onContentHeightChange: { contentHeightChanged() }))
+        }, onContentHeightChange: { contentHeightChanged() },
+           onGripDrag: { detach() },
+           onCloseDetached: { closeDetached() },
+           onToggleAlwaysOnTop: { toggleAlwaysOnTop() }))
         // 中身の intrinsicContentSize に合わせてウィンドウを伸縮させる
         hosting.sizingOptions = [.intrinsicContentSize]
         super.init()
-        closePanel = { [weak self] in self?.close() }
+        closeIfAttached = { [weak self] in
+            guard let self, !self.isDetached else { return }
+            self.close()
+        }
+        detach = { [weak self] in self?.detach() }
+        closeDetached = { [weak self] in self?.close() }
+        toggleAlwaysOnTop = { [weak self] in self?.toggleAlwaysOnTop() }
         // 状態の反映を待ってから、1サイクル遅らせて高さを合わせる
         contentHeightChanged = { [weak self] in
             DispatchQueue.main.async { self?.fitToContent() }
@@ -158,10 +289,15 @@ final class PanelController: NSObject {
         frameObserver = NotificationCenter.default.addObserver(
             forName: NSView.frameDidChangeNotification, object: hosting, queue: .main
         ) { [weak self] _ in MainActor.assumeIsolated { self?.fitToContent() } }
-        // ⌘Tab などでキーでなくなったら閉じる
+        // ⌘Tab などでキーでなくなったら閉じる（分離中は閉じない）
         resignObserver = NotificationCenter.default.addObserver(
             forName: NSWindow.didResignKeyNotification, object: panel, queue: .main
-        ) { [weak self] _ in MainActor.assumeIsolated { self?.close() } }
+        ) { [weak self] _ in
+            MainActor.assumeIsolated {
+                guard let self, !self.isDetached else { return }
+                self.close()
+            }
+        }
     }
 
     deinit {
@@ -183,6 +319,8 @@ final class PanelController: NSObject {
     }
 
     func toggle() {
+        // 分離中はアイコンのクリックで最前面に出すだけにする（閉じるのは × で）
+        if isVisible && isDetached { bringToFront(); return }
         if isVisible { close(); return }
         // キー喪失で閉じた直後（0.2秒以内）のクリックは、閉じてすぐ開き直す二重動作になるので無視する
         if Date().timeIntervalSince(lastClosedAt) < 0.2 { return }
@@ -217,7 +355,7 @@ final class PanelController: NSObject {
             matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]
         ) { [weak self] _ in
             Task { @MainActor in
-                guard let self else { return }
+                guard let self, !self.isDetached else { return }
                 if let button = self.anchor, let window = button.window {
                     let rect = window.convertToScreen(button.convert(button.bounds, to: nil))
                     if rect.contains(NSEvent.mouseLocation) { return }
@@ -232,11 +370,40 @@ final class PanelController: NSObject {
         }
     }
 
+    /// 閉じる。分離していたらメニューの状態に戻す（次に開くとアイコンの下に出る）
     func close() {
         guard panel.isVisible else { return }
         lastClosedAt = Date()
         panel.orderOut(nil)
         removeMonitors()
+        layout.isDetached = false
+        panel.level = .statusBar
+    }
+
+    /// グリップを掴んで動かし始めたら分離する。外のクリックや Esc で閉じる監視を外し、重なり順を切り替える
+    private func detach() {
+        guard !layout.isDetached else { return }
+        layout.isDetached = true
+        removeMonitors()
+        applyDetachedLevel()
+    }
+
+    private func toggleAlwaysOnTop() {
+        layout.alwaysOnTop.toggle()
+        UserDefaults.standard.set(layout.alwaysOnTop, forKey: Self.alwaysOnTopKey)
+        applyDetachedLevel()
+    }
+
+    /// 常に手前なら .floating、そうでなければ普通の窓と同じ .normal にする
+    private func applyDetachedLevel() {
+        guard layout.isDetached else { return }
+        panel.level = layout.alwaysOnTop ? .floating : .normal
+    }
+
+    /// 分離中のウィンドウを最前面に出す。アプリは前面化しない
+    func bringToFront() {
+        panel.orderFrontRegardless()
+        panel.makeKey()
     }
 
     private func removeMonitors() {

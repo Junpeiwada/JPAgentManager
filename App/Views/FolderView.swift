@@ -29,7 +29,7 @@ struct FolderView: View {
                 .frame(minWidth: 18, minHeight: 16)
                 .background(Capsule().fill(Color.white.opacity(0.28)))
             HStack(spacing: 3) {
-                ForEach(repo.sessions) { statusDot($0.status) }
+                ForEach(repo.sessions) { statusDot($0) }
             }
         }
         .padding(.horizontal, 12)
@@ -43,7 +43,19 @@ struct FolderView: View {
     }
 
     @ViewBuilder
-    private func statusDot(_ status: SessionStatus) -> some View {
+    private func statusDot(_ session: Session) -> some View {
+        if session.completedUnseen {
+            // 耳の色に緑やミントがあるので、白い縁で見分ける
+            Circle().fill(Theme.completedColor)
+                .overlay(Circle().strokeBorder(Color.white, lineWidth: 1))
+                .frame(width: 7, height: 7)
+        } else {
+            plainDot(session.status)
+        }
+    }
+
+    @ViewBuilder
+    private func plainDot(_ status: SessionStatus) -> some View {
         switch status {
         case .waiting:
             Circle().fill(Theme.waitingDotColor).frame(width: 6, height: 6)
@@ -64,13 +76,13 @@ struct FolderView: View {
                                            style: .continuous)
         return VStack(spacing: 0) {
             ForEach(Array(repo.sessions.enumerated()), id: \.element.id) { index, session in
-                if index > 0 && !touchesWaiting(index) {
+                if index > 0 && !touchesHighlighted(index) {
                     Divider().padding(.horizontal, 10)
                 }
                 SessionRow(session: session, now: now, onSelect: onSelect)
-                    // 許可待ちが続くと橙の塗りがくっつくので、前の行も許可待ちなら隙間を入れる
-                    .padding(.top, index > 0 && session.status == .waiting
-                             && repo.sessions[index - 1].status == .waiting ? 2 : 0)
+                    // 塗りのある行（許可待ち・未確認の完了）が続くとくっつくので、前の行も塗りがあれば隙間を入れる
+                    .padding(.top, index > 0 && Self.isHighlighted(session)
+                             && Self.isHighlighted(repo.sessions[index - 1]) ? 2 : 0)
             }
         }
         .padding(.horizontal, 4)
@@ -82,8 +94,13 @@ struct FolderView: View {
         .clipShape(shape)
     }
 
-    /// 区切り線の前後どちらかが許可待ちなら true（線を出さない）
-    private func touchesWaiting(_ index: Int) -> Bool {
-        repo.sessions[index].status == .waiting || repo.sessions[index - 1].status == .waiting
+    /// 行に塗りがあるか（許可待ち、または未確認の完了）
+    private static func isHighlighted(_ session: Session) -> Bool {
+        session.status == .waiting || session.completedUnseen
+    }
+
+    /// 区切り線の前後どちらかに塗りがあれば true（線を出さない）
+    private func touchesHighlighted(_ index: Int) -> Bool {
+        Self.isHighlighted(repo.sessions[index]) || Self.isHighlighted(repo.sessions[index - 1])
     }
 }

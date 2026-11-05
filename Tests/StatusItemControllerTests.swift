@@ -43,6 +43,22 @@ final class StatusItemControllerTests: XCTestCase {
         XCTAssertEqual(emphasized.width - normal.width, 8, accuracy: 0.001)
     }
 
+    func test_未確認の完了が0件なら項目を足さない() {
+        let none = StatusItemController.layout(waiting: 1, running: 1, completed: 0, total: 2, emphasized: false)
+        XCTAssertEqual(none.items.count, 3)
+    }
+
+    func test_未確認の完了があれば実行中の後ろに項目を足す() {
+        for emphasized in [false, true] {
+            let l = StatusItemController.layout(waiting: 1, running: 1, completed: 2, total: 4, emphasized: emphasized)
+            XCTAssertEqual(l.items.count, 4)
+            XCTAssertLessThanOrEqual(l.items.last!.maxX, l.width)
+            for (a, b) in zip(l.items, l.items.dropFirst()) {
+                XCTAssertLessThanOrEqual(a.maxX, b.minX)
+            }
+        }
+    }
+
     private func mouseEvent(_ type: NSEvent.EventType, modifiers: NSEvent.ModifierFlags = []) -> NSEvent? {
         NSEvent.mouseEvent(with: type, location: .zero, modifierFlags: modifiers, timestamp: 0,
                            windowNumber: 0, context: nil, eventNumber: 0, clickCount: 1, pressure: 1)
