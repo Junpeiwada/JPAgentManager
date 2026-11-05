@@ -70,7 +70,7 @@ final class SortingTests: XCTestCase {
 
     func test空タブだけのリポジトリは待機だけより後() {
         // empty は rawValue が大きいので idle だけのリポジトリより後ろに来る。
-        // 画面図では逆に見えるが、待機だけのリポジトリは画面側で折りたたみ行にまとめて末尾に出すので問題ない
+        // 画面図では逆に見えるが、待機だけのリポジトリは画面側でグレーのグループにまとめて末尾に出すので問題ない
         let empty = repo("empty-only", [session("1", .empty)])
         let idle = repo("idle-only", [session("2", .idle)])
         XCTAssertEqual(Sorting.sorted([empty, idle]).map(\.name), ["idle-only", "empty-only"])

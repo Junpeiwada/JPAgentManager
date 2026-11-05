@@ -12,7 +12,7 @@ enum Sorting {
         return arranged.sorted(by: repoPrecedes)
     }
 
-    /// 待機だけのリポジトリ（セッションが1件以上あり、全部 idle）なら true。FR-107 の折りたたみ対象
+    /// 待機だけのリポジトリ（セッションが1件以上あり、全部 idle）なら true。FR-107 のグループ対象
     static func isIdleOnly(_ repo: Repo) -> Bool {
         !repo.sessions.isEmpty && repo.sessions.allSatisfy { $0.status == .idle }
     }

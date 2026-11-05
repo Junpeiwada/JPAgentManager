@@ -68,6 +68,15 @@ enum Theme {
     /// tinted カプセルの塗り
     static let capsuleFillOpacity: Double = 0.14
 
+    // MARK: 待機だけのフォルダのグループ（FR-107）
+    /// 背景の塗り。周囲より少し暗いグレー。ダークは差が出にくいので黒を濃くする
+    static let idleGroupFill = Color(nsColor: NSColor(name: nil) { appearance in
+        let isDark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+        return NSColor.black.withAlphaComponent(isDark ? 0.4 : 0.18)
+    })
+    static let idleGroupPadding: CGFloat = 6
+    static let idleGroupCornerRadius: CGFloat = 16
+
     // MARK: 未確認の完了（FR-111）
     /// 未確認の完了の色（行の塗り・カプセル・メニューバーの点）
     static let completedColor = Color.green
