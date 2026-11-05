@@ -30,14 +30,4 @@ final class SessionTests: XCTestCase {
     func test状態の並び順() {
         XCTAssertEqual(SessionStatus.allCases.sorted(), [.waiting, .running, .idle, .empty])
     }
-
-    func testリポジトリの色は安定() {
-        XCTAssertEqual(Theme.repoColorIndex(for: "/a/b"), Theme.repoColorIndex(for: "/a/b"))
-        let nfc = "/Users/x/プロジェクト".precomposedStringWithCanonicalMapping
-        let nfd = "/Users/x/プロジェクト".decomposedStringWithCanonicalMapping
-        XCTAssertNotEqual(Array(nfc.utf8), Array(nfd.utf8))
-        XCTAssertEqual(Theme.repoColorIndex(for: nfc), Theme.repoColorIndex(for: nfd))
-        let index = Theme.repoColorIndex(for: "")
-        XCTAssertTrue(Theme.repoPalette.indices.contains(index))
-    }
 }

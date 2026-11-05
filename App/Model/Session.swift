@@ -54,4 +54,5 @@ struct Repo: Identifiable, Hashable {
     var name: String          // フォルダ名
     var branch: String?
     var sessions: [Session]
+    var gitStatus: GitStatus? = nil
 }

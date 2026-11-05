@@ -8,13 +8,6 @@ struct SessionRow: View {
 
     @State private var hovering = false
 
-    /// 許可待ちの「指示」行に使う橙系の文字色（ダークでは明るめ）
-    private static let promptColor = Color(nsColor: NSColor(name: nil) { appearance in
-        appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-            ? NSColor(red: 1.0, green: 0.7, blue: 0.3, alpha: 1)
-            : NSColor(red: 0.64, green: 0.35, blue: 0.0, alpha: 1)
-    })
-
     private var isDimmed: Bool {
         !session.completedUnseen && (session.status == .idle || session.status == .empty)
     }
@@ -48,7 +41,7 @@ struct SessionRow: View {
                     detailLine(label: "直近", text: Self.oneLine(action), color: .secondary)
                 }
                 if session.status == .waiting, let prompt = session.lastPrompt {
-                    detailLine(label: "指示", text: "「\(Self.oneLine(prompt))」", color: Self.promptColor)
+                    detailLine(label: "指示", text: "「\(Self.oneLine(prompt))」", color: Theme.waitingPromptColor)
                 }
             }
             .padding(.horizontal, 10)
@@ -78,10 +71,10 @@ struct SessionRow: View {
     private var rowBackground: some View {
         let shape = RoundedRectangle(cornerRadius: Theme.rowCornerRadius, style: .continuous)
         if session.completedUnseen {
-            shape.fill(Theme.completedColor.opacity(Theme.completedRowFillOpacity))
+            shape.fill(Theme.completedRowFill)
                 .overlay(shape.fill(Color.primary.opacity(hovering ? 0.04 : 0)))
         } else if session.status == .waiting {
-            shape.fill(Theme.color(for: .waiting).opacity(Theme.waitingRowFillOpacity))
+            shape.fill(Theme.waitingRowFill)
                 .overlay(shape.fill(Color.primary.opacity(hovering ? 0.04 : 0)))
         } else {
             shape.fill(Color.primary.opacity(hovering ? 0.06 : 0))

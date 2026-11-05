@@ -1,0 +1,625 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1296 1434" width="1296" height="1434" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN',-apple-system,sans-serif">
+<rect width="1296" height="1434" fill="#FAFAFA"/>
+<text x="24.0" y="34.0" font-size="20" font-weight="700" fill="#1E1E24" text-anchor="start">耳は藍色で統一。差は許可待ちの目立たせ方</text>
+<text x="26.0" y="64.0" font-size="13" font-weight="500" fill="#5F636C" text-anchor="start">許可待ちは朱の淡い行。今の構成に近い</text>
+<rect x="24.0" y="78.0" width="400.0" height="654.0" rx="16" fill="#EEF0F3"/>
+<path d="M24 104 V94 a16 16 0 0 1 16 -16 H408 a16 16 0 0 1 16 16 V104 Z" fill="#F8F8FA"/>
+<text x="38.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">案1 朱と緑 / ライト</text>
+<rect x="334.0" y="83.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="343.0" cy="91.5" r="4" fill="#FFFFFF"/>
+<text x="351.0" y="96.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="378.0" cy="91.5" r="4" fill="#1F7A3A"/>
+<text x="386.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<circle cx="402.0" cy="91.5" r="4" fill="#4E5968"/>
+<text x="410.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<rect x="192.0" y="110.0" width="64.0" height="5.0" rx="2.5" fill="#5F636C"/>
+<text x="40.0" y="142.0" font-size="17" font-weight="700" fill="#1E1E24" text-anchor="start">Claude</text>
+<rect x="358.8" y="129.0" width="51.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<text x="366.8" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">タブ 6</text>
+<rect x="291.6" y="129.0" width="62.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="301.6" cy="139.0" r="3.5" fill="#4E5968"/>
+<text x="310.6" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">完了 2</text>
+<rect x="213.4" y="129.0" width="73.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="223.4" cy="139.0" r="3.5" fill="#1F7A3A"/>
+<text x="232.4" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">実行中 2</text>
+<rect x="135.2" y="129.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="143.2" y="143.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M36 182 V169 a11 11 0 0 1 11 -11 H193.87199999999999 a11 11 0 0 1 11 11 V182 Z" fill="#4F5B93"/>
+<text x="48.0" y="174.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="145.9" y="162" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="154.9" y="174.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="170.9" cy="170.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="179.9" cy="170.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="188.9" cy="170.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="406.0" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎5</text>
+<text x="383.4" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑1</text>
+<text x="360.8" y="174.5" font-size="11" font-weight="700" fill="#B23A17" text-anchor="end">↓3</text>
+<text x="338.2" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M36 182 H412 V345 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="36.0" y="182.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="40.0" y="188.0" width="368.0" height="62.0" rx="11" fill="#FBE7E0"/>
+<text x="50.0" y="207.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="318.9" y="194.5" width="81.1" height="17.0" rx="8.5" fill="#C4411C"/>
+<text x="326.9" y="206.7" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="start">許可待ち 2分</text>
+<text x="50.0" y="224.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="224.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Bash: npm run tauri build</text>
+<text x="50.0" y="240.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">指示</text>
+<text x="78.0" y="240.0" font-size="11" font-weight="400" fill="#963012" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="50.0" y="271.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="310.0" y="258.5" width="90.0" height="17.0" rx="8.5" fill="#E0F1E5"/>
+<circle cx="320.0" cy="267.0" r="3" fill="#1F7A3A"/>
+<text x="329.0" y="270.7" font-size="10.5" font-weight="600" fill="#1F7A3A" text-anchor="start">実行中 0:45</text>
+<text x="50.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="40.0" y="302.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="50.0" y="321.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">README の手順を更新</text>
+<rect x="316.8" y="308.5" width="83.2" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="324.8" y="320.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 25分</text>
+<text x="50.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M36 391 V378 a11 11 0 0 1 11 -11 H159.81599999999997 a11 11 0 0 1 11 11 V391 Z" fill="#4F5B93"/>
+<text x="48.0" y="383.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="120.8" y="371" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="129.8" y="383.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="145.8" cy="379.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="154.8" cy="379.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="406.0" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑2</text>
+<text x="383.4" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">feature/agent-view</text>
+<path d="M36 391 H412 V490 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="36.0" y="391.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<text x="50.0" y="416.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="310.0" y="403.5" width="90.0" height="17.0" rx="8.5" fill="#E0F1E5"/>
+<circle cx="320.0" cy="412.0" r="3" fill="#1F7A3A"/>
+<text x="329.0" y="415.7" font-size="10.5" font-weight="600" fill="#1F7A3A" text-anchor="start">実行中 0:12</text>
+<text x="50.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="50.0" y="466.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">dry-run 表示を整理</text>
+<text x="398.0" y="465.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 1時間</text>
+<text x="50.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<path d="M36 536 V523 a11 11 0 0 1 11 -11 H167.51999999999998 a11 11 0 0 1 11 11 V536 Z" fill="#4F5B93"/>
+<text x="48.0" y="528.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="137.5" y="516" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="146.5" y="528.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="162.5" cy="524.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="406.0" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎2</text>
+<text x="383.4" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M36 536 H412 V585 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="36.0" y="536.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="40.0" y="542.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="50.0" y="561.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">設計メモの更新</text>
+<rect x="323.1" y="548.5" width="76.9" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="331.1" y="560.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 3分</text>
+<text x="50.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="78.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<rect x="30.0" y="607.0" width="388.0" height="83.0" rx="16" fill="#E0E2E6"/>
+<path d="M36 637 V624 a11 11 0 0 1 11 -11 H134.112 a11 11 0 0 1 11 11 V637 Z" fill="#6B6F78"/>
+<text x="48.0" y="629.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="104.1" y="617" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="113.1" y="629.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="129.1" cy="625.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="406.0" y="629.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main  待機中のみ</text>
+<path d="M36 637 H412 V672 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="36.0" y="637.0" width="376.0" height="3.0" rx="0" fill="#6B6F78"/>
+<text x="50.0" y="664.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">（タイトル未取得）</text>
+<text x="398.0" y="663.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 3時間</text>
+<text x="40.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="start">設定…</text>
+<text x="408.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">v0.1.3   更新を確認…</text>
+<rect x="24.0" y="756.0" width="400.0" height="654.0" rx="16" fill="#202227"/>
+<path d="M24 782 V772 a16 16 0 0 1 16 -16 H408 a16 16 0 0 1 16 16 V782 Z" fill="#17181C"/>
+<text x="38.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">案1 朱と緑 / ダーク</text>
+<rect x="334.0" y="761.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="343.0" cy="769.5" r="4" fill="#FFFFFF"/>
+<text x="351.0" y="774.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="378.0" cy="769.5" r="4" fill="#6BDB8B"/>
+<text x="386.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<circle cx="402.0" cy="769.5" r="4" fill="#B9BDC6"/>
+<text x="410.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<rect x="192.0" y="788.0" width="64.0" height="5.0" rx="2.5" fill="#A4A7AF"/>
+<text x="40.0" y="820.0" font-size="17" font-weight="700" fill="#ECEDF0" text-anchor="start">Claude</text>
+<rect x="358.8" y="807.0" width="51.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<text x="366.8" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">タブ 6</text>
+<rect x="291.6" y="807.0" width="62.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="301.6" cy="817.0" r="3.5" fill="#B9BDC6"/>
+<text x="310.6" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">完了 2</text>
+<rect x="213.4" y="807.0" width="73.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="223.4" cy="817.0" r="3.5" fill="#6BDB8B"/>
+<text x="232.4" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">実行中 2</text>
+<rect x="135.2" y="807.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="143.2" y="821.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M36 860 V847 a11 11 0 0 1 11 -11 H193.87199999999999 a11 11 0 0 1 11 11 V860 Z" fill="#4A5588"/>
+<text x="48.0" y="852.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="145.9" y="840" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="154.9" y="852.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="170.9" cy="848.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="179.9" cy="848.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="188.9" cy="848.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="406.0" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎5</text>
+<text x="383.4" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑1</text>
+<text x="360.8" y="852.5" font-size="11" font-weight="700" fill="#FF8F6E" text-anchor="end">↓3</text>
+<text x="338.2" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M36 860 H412 V1023 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="36.0" y="860.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="40.0" y="866.0" width="368.0" height="62.0" rx="11" fill="#46291E"/>
+<text x="50.0" y="885.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="318.9" y="872.5" width="81.1" height="17.0" rx="8.5" fill="#C4411C"/>
+<text x="326.9" y="884.7" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="start">許可待ち 2分</text>
+<text x="50.0" y="902.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="902.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Bash: npm run tauri build</text>
+<text x="50.0" y="918.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">指示</text>
+<text x="78.0" y="918.0" font-size="11" font-weight="400" fill="#FFB59E" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="50.0" y="949.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="310.0" y="936.5" width="90.0" height="17.0" rx="8.5" fill="#1F3A29"/>
+<circle cx="320.0" cy="945.0" r="3" fill="#6BDB8B"/>
+<text x="329.0" y="948.7" font-size="10.5" font-weight="600" fill="#6BDB8B" text-anchor="start">実行中 0:45</text>
+<text x="50.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="40.0" y="980.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="50.0" y="999.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">README の手順を更新</text>
+<rect x="316.8" y="986.5" width="83.2" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="324.8" y="998.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 25分</text>
+<text x="50.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M36 1069 V1056 a11 11 0 0 1 11 -11 H159.81599999999997 a11 11 0 0 1 11 11 V1069 Z" fill="#4A5588"/>
+<text x="48.0" y="1061.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="120.8" y="1049" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="129.8" y="1061.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="145.8" cy="1057.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="154.8" cy="1057.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="406.0" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑2</text>
+<text x="383.4" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">feature/agent-view</text>
+<path d="M36 1069 H412 V1168 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="36.0" y="1069.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<text x="50.0" y="1094.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="310.0" y="1081.5" width="90.0" height="17.0" rx="8.5" fill="#1F3A29"/>
+<circle cx="320.0" cy="1090.0" r="3" fill="#6BDB8B"/>
+<text x="329.0" y="1093.7" font-size="10.5" font-weight="600" fill="#6BDB8B" text-anchor="start">実行中 0:12</text>
+<text x="50.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="50.0" y="1144.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">dry-run 表示を整理</text>
+<text x="398.0" y="1143.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 1時間</text>
+<text x="50.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<path d="M36 1214 V1201 a11 11 0 0 1 11 -11 H167.51999999999998 a11 11 0 0 1 11 11 V1214 Z" fill="#4A5588"/>
+<text x="48.0" y="1206.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="137.5" y="1194" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="146.5" y="1206.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="162.5" cy="1202.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="406.0" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎2</text>
+<text x="383.4" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M36 1214 H412 V1263 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="36.0" y="1214.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="40.0" y="1220.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="50.0" y="1239.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">設計メモの更新</text>
+<rect x="323.1" y="1226.5" width="76.9" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="331.1" y="1238.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 3分</text>
+<text x="50.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="78.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<rect x="30.0" y="1285.0" width="388.0" height="83.0" rx="16" fill="#15161A"/>
+<path d="M36 1315 V1302 a11 11 0 0 1 11 -11 H134.112 a11 11 0 0 1 11 11 V1315 Z" fill="#55585F"/>
+<text x="48.0" y="1307.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="104.1" y="1295" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="113.1" y="1307.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="129.1" cy="1303.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="406.0" y="1307.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main  待機中のみ</text>
+<path d="M36 1315 H412 V1350 a12 12 0 0 1 -12 12 H48 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="36.0" y="1315.0" width="376.0" height="3.0" rx="0" fill="#55585F"/>
+<text x="50.0" y="1342.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">（タイトル未取得）</text>
+<text x="398.0" y="1341.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 3時間</text>
+<text x="40.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="start">設定…</text>
+<text x="408.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">v0.1.3   更新を確認…</text>
+<text x="450.0" y="64.0" font-size="13" font-weight="500" fill="#5F636C" text-anchor="start">色は藍と朱の2色。実行中も藍に揃える</text>
+<rect x="448.0" y="78.0" width="400.0" height="654.0" rx="16" fill="#EEF0F3"/>
+<path d="M448 104 V94 a16 16 0 0 1 16 -16 H832 a16 16 0 0 1 16 16 V104 Z" fill="#F8F8FA"/>
+<text x="462.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">案2 朱だけ / ライト</text>
+<rect x="758.0" y="83.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="767.0" cy="91.5" r="4" fill="#FFFFFF"/>
+<text x="775.0" y="96.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="802.0" cy="91.5" r="4" fill="#3F4A80"/>
+<text x="810.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<circle cx="826.0" cy="91.5" r="4" fill="#4E5968"/>
+<text x="834.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<rect x="616.0" y="110.0" width="64.0" height="5.0" rx="2.5" fill="#5F636C"/>
+<text x="464.0" y="142.0" font-size="17" font-weight="700" fill="#1E1E24" text-anchor="start">Claude</text>
+<rect x="782.8" y="129.0" width="51.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<text x="790.8" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">タブ 6</text>
+<rect x="715.6" y="129.0" width="62.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="725.6" cy="139.0" r="3.5" fill="#4E5968"/>
+<text x="734.6" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">完了 2</text>
+<rect x="637.4" y="129.0" width="73.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="647.4" cy="139.0" r="3.5" fill="#3F4A80"/>
+<text x="656.4" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">実行中 2</text>
+<rect x="559.2" y="129.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="567.2" y="143.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M460 182 V169 a11 11 0 0 1 11 -11 H617.872 a11 11 0 0 1 11 11 V182 Z" fill="#4F5B93"/>
+<text x="472.0" y="174.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="569.9" y="162" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="578.9" y="174.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="594.9" cy="170.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="603.9" cy="170.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="612.9" cy="170.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="830.0" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎5</text>
+<text x="807.4" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑1</text>
+<text x="784.8" y="174.5" font-size="11" font-weight="700" fill="#B23A17" text-anchor="end">↓3</text>
+<text x="762.2" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M460 182 H836 V345 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="460.0" y="182.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="464.0" y="188.0" width="368.0" height="62.0" rx="11" fill="#FBE7E0"/>
+<text x="474.0" y="207.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="742.9" y="194.5" width="81.1" height="17.0" rx="8.5" fill="#C4411C"/>
+<text x="750.9" y="206.7" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="start">許可待ち 2分</text>
+<text x="474.0" y="224.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="224.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Bash: npm run tauri build</text>
+<text x="474.0" y="240.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">指示</text>
+<text x="502.0" y="240.0" font-size="11" font-weight="400" fill="#963012" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="474.0" y="271.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="734.0" y="258.5" width="90.0" height="17.0" rx="8.5" fill="#E4E7F3"/>
+<circle cx="744.0" cy="267.0" r="3" fill="#3F4A80"/>
+<text x="753.0" y="270.7" font-size="10.5" font-weight="600" fill="#3F4A80" text-anchor="start">実行中 0:45</text>
+<text x="474.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="464.0" y="302.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="474.0" y="321.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">README の手順を更新</text>
+<rect x="740.8" y="308.5" width="83.2" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="748.8" y="320.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 25分</text>
+<text x="474.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M460 391 V378 a11 11 0 0 1 11 -11 H583.816 a11 11 0 0 1 11 11 V391 Z" fill="#4F5B93"/>
+<text x="472.0" y="383.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="544.8" y="371" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="553.8" y="383.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="569.8" cy="379.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="578.8" cy="379.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="830.0" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑2</text>
+<text x="807.4" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">feature/agent-view</text>
+<path d="M460 391 H836 V490 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="460.0" y="391.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<text x="474.0" y="416.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="734.0" y="403.5" width="90.0" height="17.0" rx="8.5" fill="#E4E7F3"/>
+<circle cx="744.0" cy="412.0" r="3" fill="#3F4A80"/>
+<text x="753.0" y="415.7" font-size="10.5" font-weight="600" fill="#3F4A80" text-anchor="start">実行中 0:12</text>
+<text x="474.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="474.0" y="466.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">dry-run 表示を整理</text>
+<text x="822.0" y="465.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 1時間</text>
+<text x="474.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<path d="M460 536 V523 a11 11 0 0 1 11 -11 H591.52 a11 11 0 0 1 11 11 V536 Z" fill="#4F5B93"/>
+<text x="472.0" y="528.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="561.5" y="516" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="570.5" y="528.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="586.5" cy="524.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="830.0" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎2</text>
+<text x="807.4" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M460 536 H836 V585 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="460.0" y="536.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="464.0" y="542.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="474.0" y="561.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">設計メモの更新</text>
+<rect x="747.1" y="548.5" width="76.9" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="755.1" y="560.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 3分</text>
+<text x="474.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="502.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<rect x="454.0" y="607.0" width="388.0" height="83.0" rx="16" fill="#E0E2E6"/>
+<path d="M460 637 V624 a11 11 0 0 1 11 -11 H558.112 a11 11 0 0 1 11 11 V637 Z" fill="#6B6F78"/>
+<text x="472.0" y="629.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="528.1" y="617" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="537.1" y="629.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="553.1" cy="625.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="830.0" y="629.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main  待機中のみ</text>
+<path d="M460 637 H836 V672 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="460.0" y="637.0" width="376.0" height="3.0" rx="0" fill="#6B6F78"/>
+<text x="474.0" y="664.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">（タイトル未取得）</text>
+<text x="822.0" y="663.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 3時間</text>
+<text x="464.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="start">設定…</text>
+<text x="832.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">v0.1.3   更新を確認…</text>
+<rect x="448.0" y="756.0" width="400.0" height="654.0" rx="16" fill="#202227"/>
+<path d="M448 782 V772 a16 16 0 0 1 16 -16 H832 a16 16 0 0 1 16 16 V782 Z" fill="#17181C"/>
+<text x="462.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">案2 朱だけ / ダーク</text>
+<rect x="758.0" y="761.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="767.0" cy="769.5" r="4" fill="#FFFFFF"/>
+<text x="775.0" y="774.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="802.0" cy="769.5" r="4" fill="#AEB8E8"/>
+<text x="810.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<circle cx="826.0" cy="769.5" r="4" fill="#B9BDC6"/>
+<text x="834.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<rect x="616.0" y="788.0" width="64.0" height="5.0" rx="2.5" fill="#A4A7AF"/>
+<text x="464.0" y="820.0" font-size="17" font-weight="700" fill="#ECEDF0" text-anchor="start">Claude</text>
+<rect x="782.8" y="807.0" width="51.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<text x="790.8" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">タブ 6</text>
+<rect x="715.6" y="807.0" width="62.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="725.6" cy="817.0" r="3.5" fill="#B9BDC6"/>
+<text x="734.6" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">完了 2</text>
+<rect x="637.4" y="807.0" width="73.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="647.4" cy="817.0" r="3.5" fill="#AEB8E8"/>
+<text x="656.4" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">実行中 2</text>
+<rect x="559.2" y="807.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="567.2" y="821.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M460 860 V847 a11 11 0 0 1 11 -11 H617.872 a11 11 0 0 1 11 11 V860 Z" fill="#4A5588"/>
+<text x="472.0" y="852.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="569.9" y="840" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="578.9" y="852.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="594.9" cy="848.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="603.9" cy="848.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="612.9" cy="848.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="830.0" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎5</text>
+<text x="807.4" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑1</text>
+<text x="784.8" y="852.5" font-size="11" font-weight="700" fill="#FF8F6E" text-anchor="end">↓3</text>
+<text x="762.2" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M460 860 H836 V1023 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="460.0" y="860.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="464.0" y="866.0" width="368.0" height="62.0" rx="11" fill="#46291E"/>
+<text x="474.0" y="885.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="742.9" y="872.5" width="81.1" height="17.0" rx="8.5" fill="#C4411C"/>
+<text x="750.9" y="884.7" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="start">許可待ち 2分</text>
+<text x="474.0" y="902.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="902.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Bash: npm run tauri build</text>
+<text x="474.0" y="918.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">指示</text>
+<text x="502.0" y="918.0" font-size="11" font-weight="400" fill="#FFB59E" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="474.0" y="949.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="734.0" y="936.5" width="90.0" height="17.0" rx="8.5" fill="#31375A"/>
+<circle cx="744.0" cy="945.0" r="3" fill="#AEB8E8"/>
+<text x="753.0" y="948.7" font-size="10.5" font-weight="600" fill="#AEB8E8" text-anchor="start">実行中 0:45</text>
+<text x="474.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="464.0" y="980.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="474.0" y="999.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">README の手順を更新</text>
+<rect x="740.8" y="986.5" width="83.2" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="748.8" y="998.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 25分</text>
+<text x="474.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M460 1069 V1056 a11 11 0 0 1 11 -11 H583.816 a11 11 0 0 1 11 11 V1069 Z" fill="#4A5588"/>
+<text x="472.0" y="1061.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="544.8" y="1049" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="553.8" y="1061.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="569.8" cy="1057.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="578.8" cy="1057.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="830.0" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑2</text>
+<text x="807.4" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">feature/agent-view</text>
+<path d="M460 1069 H836 V1168 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="460.0" y="1069.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<text x="474.0" y="1094.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="734.0" y="1081.5" width="90.0" height="17.0" rx="8.5" fill="#31375A"/>
+<circle cx="744.0" cy="1090.0" r="3" fill="#AEB8E8"/>
+<text x="753.0" y="1093.7" font-size="10.5" font-weight="600" fill="#AEB8E8" text-anchor="start">実行中 0:12</text>
+<text x="474.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="474.0" y="1144.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">dry-run 表示を整理</text>
+<text x="822.0" y="1143.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 1時間</text>
+<text x="474.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<path d="M460 1214 V1201 a11 11 0 0 1 11 -11 H591.52 a11 11 0 0 1 11 11 V1214 Z" fill="#4A5588"/>
+<text x="472.0" y="1206.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="561.5" y="1194" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="570.5" y="1206.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="586.5" cy="1202.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="830.0" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎2</text>
+<text x="807.4" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M460 1214 H836 V1263 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="460.0" y="1214.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="464.0" y="1220.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="474.0" y="1239.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">設計メモの更新</text>
+<rect x="747.1" y="1226.5" width="76.9" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="755.1" y="1238.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 3分</text>
+<text x="474.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="502.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<rect x="454.0" y="1285.0" width="388.0" height="83.0" rx="16" fill="#15161A"/>
+<path d="M460 1315 V1302 a11 11 0 0 1 11 -11 H558.112 a11 11 0 0 1 11 11 V1315 Z" fill="#55585F"/>
+<text x="472.0" y="1307.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="528.1" y="1295" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="537.1" y="1307.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="553.1" cy="1303.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="830.0" y="1307.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main  待機中のみ</text>
+<path d="M460 1315 H836 V1350 a12 12 0 0 1 -12 12 H472 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="460.0" y="1315.0" width="376.0" height="3.0" rx="0" fill="#55585F"/>
+<text x="474.0" y="1342.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">（タイトル未取得）</text>
+<text x="822.0" y="1341.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 3時間</text>
+<text x="464.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="start">設定…</text>
+<text x="832.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">v0.1.3   更新を確認…</text>
+<text x="874.0" y="64.0" font-size="13" font-weight="500" fill="#5F636C" text-anchor="start">許可待ちの行だけ朱で塗りつぶす</text>
+<rect x="872.0" y="78.0" width="400.0" height="654.0" rx="16" fill="#EEF0F3"/>
+<path d="M872 104 V94 a16 16 0 0 1 16 -16 H1256 a16 16 0 0 1 16 16 V104 Z" fill="#F8F8FA"/>
+<text x="886.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">案3 許可待ち最大（推奨） / ライト</text>
+<rect x="1182.0" y="83.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="1191.0" cy="91.5" r="4" fill="#FFFFFF"/>
+<text x="1199.0" y="96.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="1226.0" cy="91.5" r="4" fill="#1F7A3A"/>
+<text x="1234.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<circle cx="1250.0" cy="91.5" r="4" fill="#4E5968"/>
+<text x="1258.0" y="96.0" font-size="12" font-weight="700" fill="#1E1E24" text-anchor="start">2</text>
+<rect x="1040.0" y="110.0" width="64.0" height="5.0" rx="2.5" fill="#5F636C"/>
+<text x="888.0" y="142.0" font-size="17" font-weight="700" fill="#1E1E24" text-anchor="start">Claude</text>
+<rect x="1206.8" y="129.0" width="51.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<text x="1214.8" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">タブ 6</text>
+<rect x="1139.6" y="129.0" width="62.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="1149.6" cy="139.0" r="3.5" fill="#4E5968"/>
+<text x="1158.6" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">完了 2</text>
+<rect x="1061.4" y="129.0" width="73.2" height="20.0" rx="10" fill="#FFFFFF" stroke="#DDE0E5"/>
+<circle cx="1071.4" cy="139.0" r="3.5" fill="#1F7A3A"/>
+<text x="1080.4" y="143.0" font-size="11" font-weight="600" fill="#1E1E24" text-anchor="start">実行中 2</text>
+<rect x="983.2" y="129.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="991.2" y="143.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M884 182 V169 a11 11 0 0 1 11 -11 H1041.872 a11 11 0 0 1 11 11 V182 Z" fill="#4F5B93"/>
+<text x="896.0" y="174.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="993.9" y="162" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="1002.9" y="174.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="1018.9" cy="170.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="1027.9" cy="170.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="1036.9" cy="170.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="1254.0" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎5</text>
+<text x="1231.4" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑1</text>
+<text x="1208.8" y="174.5" font-size="11" font-weight="700" fill="#B23A17" text-anchor="end">↓3</text>
+<text x="1186.2" y="174.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M884 182 H1260 V345 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="884.0" y="182.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="888.0" y="188.0" width="368.0" height="62.0" rx="11" fill="#C4411C"/>
+<text x="898.0" y="207.0" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="1166.9" y="194.5" width="81.1" height="17.0" rx="8.5" fill="#FFFFFF"/>
+<text x="1174.9" y="206.7" font-size="10.5" font-weight="600" fill="#C4411C" text-anchor="start">許可待ち 2分</text>
+<text x="898.0" y="224.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">直近</text>
+<text x="926.0" y="224.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">Bash: npm run tauri build</text>
+<text x="898.0" y="240.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">指示</text>
+<text x="926.0" y="240.0" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="898.0" y="271.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="1158.0" y="258.5" width="90.0" height="17.0" rx="8.5" fill="#E0F1E5"/>
+<circle cx="1168.0" cy="267.0" r="3" fill="#1F7A3A"/>
+<text x="1177.0" y="270.7" font-size="10.5" font-weight="600" fill="#1F7A3A" text-anchor="start">実行中 0:45</text>
+<text x="898.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="926.0" y="288.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="888.0" y="302.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="898.0" y="321.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">README の手順を更新</text>
+<rect x="1164.8" y="308.5" width="83.2" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="1172.8" y="320.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 25分</text>
+<text x="898.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="926.0" y="338.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M884 391 V378 a11 11 0 0 1 11 -11 H1007.816 a11 11 0 0 1 11 11 V391 Z" fill="#4F5B93"/>
+<text x="896.0" y="383.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="968.8" y="371" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="977.8" y="383.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="993.8" cy="379.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="1002.8" cy="379.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="1254.0" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">↑2</text>
+<text x="1231.4" y="383.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">feature/agent-view</text>
+<path d="M884 391 H1260 V490 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="884.0" y="391.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<text x="898.0" y="416.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="1158.0" y="403.5" width="90.0" height="17.0" rx="8.5" fill="#E0F1E5"/>
+<circle cx="1168.0" cy="412.0" r="3" fill="#1F7A3A"/>
+<text x="1177.0" y="415.7" font-size="10.5" font-weight="600" fill="#1F7A3A" text-anchor="start">実行中 0:12</text>
+<text x="898.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="926.0" y="433.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="898.0" y="466.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">dry-run 表示を整理</text>
+<text x="1246.0" y="465.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 1時間</text>
+<text x="898.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="926.0" y="483.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<path d="M884 536 V523 a11 11 0 0 1 11 -11 H1015.52 a11 11 0 0 1 11 11 V536 Z" fill="#4F5B93"/>
+<text x="896.0" y="528.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="985.5" y="516" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="994.5" y="528.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="1010.5" cy="524.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="1254.0" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">✎2</text>
+<text x="1231.4" y="528.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main</text>
+<path d="M884 536 H1260 V585 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="884.0" y="536.0" width="376.0" height="3.0" rx="0" fill="#4F5B93"/>
+<rect x="888.0" y="542.0" width="368.0" height="48.0" rx="11" fill="#F3F4F6"/>
+<text x="898.0" y="561.0" font-size="13" font-weight="600" fill="#1E1E24" text-anchor="start">設計メモの更新</text>
+<rect x="1171.1" y="548.5" width="76.9" height="17.0" rx="8.5" fill="#E8EAED"/>
+<text x="1179.1" y="560.7" font-size="10.5" font-weight="600" fill="#4E5968" text-anchor="start">✓ 完了 3分</text>
+<text x="898.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">直近</text>
+<text x="926.0" y="578.0" font-size="11" font-weight="400" fill="#5F636C" text-anchor="start">返答済み</text>
+<rect x="878.0" y="607.0" width="388.0" height="83.0" rx="16" fill="#E0E2E6"/>
+<path d="M884 637 V624 a11 11 0 0 1 11 -11 H982.112 a11 11 0 0 1 11 11 V637 Z" fill="#6B6F78"/>
+<text x="896.0" y="629.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="952.1" y="617" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="961.1" y="629.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="977.1" cy="625.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="1254.0" y="629.5" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">main  待機中のみ</text>
+<path d="M884 637 H1260 V672 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#FFFFFF"/>
+<rect x="884.0" y="637.0" width="376.0" height="3.0" rx="0" fill="#6B6F78"/>
+<text x="898.0" y="664.0" font-size="13" font-weight="400" fill="#5F636C" text-anchor="start">（タイトル未取得）</text>
+<text x="1246.0" y="663.7" font-size="10.5" font-weight="600" fill="#5F636C" text-anchor="end">待機 3時間</text>
+<text x="888.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="start">設定…</text>
+<text x="1256.0" y="718.0" font-size="11" font-weight="500" fill="#5F636C" text-anchor="end">v0.1.3   更新を確認…</text>
+<rect x="872.0" y="756.0" width="400.0" height="654.0" rx="16" fill="#202227"/>
+<path d="M872 782 V772 a16 16 0 0 1 16 -16 H1256 a16 16 0 0 1 16 16 V782 Z" fill="#17181C"/>
+<text x="886.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">案3 許可待ち最大（推奨） / ダーク</text>
+<rect x="1182.0" y="761.0" width="34.0" height="17.0" rx="5" fill="#C4411C"/>
+<circle cx="1191.0" cy="769.5" r="4" fill="#FFFFFF"/>
+<text x="1199.0" y="774.0" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">1</text>
+<circle cx="1226.0" cy="769.5" r="4" fill="#6BDB8B"/>
+<text x="1234.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<circle cx="1250.0" cy="769.5" r="4" fill="#B9BDC6"/>
+<text x="1258.0" y="774.0" font-size="12" font-weight="700" fill="#ECEDF0" text-anchor="start">2</text>
+<rect x="1040.0" y="788.0" width="64.0" height="5.0" rx="2.5" fill="#A4A7AF"/>
+<text x="888.0" y="820.0" font-size="17" font-weight="700" fill="#ECEDF0" text-anchor="start">Claude</text>
+<rect x="1206.8" y="807.0" width="51.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<text x="1214.8" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">タブ 6</text>
+<rect x="1139.6" y="807.0" width="62.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="1149.6" cy="817.0" r="3.5" fill="#B9BDC6"/>
+<text x="1158.6" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">完了 2</text>
+<rect x="1061.4" y="807.0" width="73.2" height="20.0" rx="10" fill="#2F3137" stroke="#40434A"/>
+<circle cx="1071.4" cy="817.0" r="3.5" fill="#6BDB8B"/>
+<text x="1080.4" y="821.0" font-size="11" font-weight="600" fill="#ECEDF0" text-anchor="start">実行中 2</text>
+<rect x="983.2" y="807.0" width="73.2" height="20.0" rx="10" fill="#C4411C"/>
+<text x="991.2" y="821.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="start">許可待ち 1</text>
+<path d="M884 860 V847 a11 11 0 0 1 11 -11 H1041.872 a11 11 0 0 1 11 11 V860 Z" fill="#4A5588"/>
+<text x="896.0" y="852.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">PhotoSorter</text>
+<rect x="993.9" y="840" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="1002.9" y="852.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">3</text>
+<circle cx="1018.9" cy="848.0" r="3.6" fill="#FFD60A" stroke="#FFFFFF" stroke-width="0.9"/>
+<circle cx="1027.9" cy="848.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="1036.9" cy="848.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="1254.0" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎5</text>
+<text x="1231.4" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑1</text>
+<text x="1208.8" y="852.5" font-size="11" font-weight="700" fill="#FF8F6E" text-anchor="end">↓3</text>
+<text x="1186.2" y="852.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M884 860 H1260 V1023 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="884.0" y="860.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="888.0" y="866.0" width="368.0" height="62.0" rx="11" fill="#C4411C"/>
+<text x="898.0" y="885.0" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="start">写真選別にお気に入りフィルタを追加</text>
+<rect x="1166.9" y="872.5" width="81.1" height="17.0" rx="8.5" fill="#FFFFFF"/>
+<text x="1174.9" y="884.7" font-size="10.5" font-weight="600" fill="#C4411C" text-anchor="start">許可待ち 2分</text>
+<text x="898.0" y="902.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">直近</text>
+<text x="926.0" y="902.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">Bash: npm run tauri build</text>
+<text x="898.0" y="918.0" font-size="11" font-weight="400" fill="#FFFFFF" text-anchor="start">指示</text>
+<text x="926.0" y="918.0" font-size="11" font-weight="600" fill="#FFFFFF" text-anchor="start">「フィルタの状態を保存して」</text>
+<text x="898.0" y="949.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">画像補正パラメータの比較実験</text>
+<rect x="1158.0" y="936.5" width="90.0" height="17.0" rx="8.5" fill="#1F3A29"/>
+<circle cx="1168.0" cy="945.0" r="3" fill="#6BDB8B"/>
+<text x="1177.0" y="948.7" font-size="10.5" font-weight="600" fill="#6BDB8B" text-anchor="start">実行中 0:45</text>
+<text x="898.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="926.0" y="966.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Edit: src/filter/config.ts</text>
+<rect x="888.0" y="980.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="898.0" y="999.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">README の手順を更新</text>
+<rect x="1164.8" y="986.5" width="83.2" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="1172.8" y="998.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 25分</text>
+<text x="898.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="926.0" y="1016.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み（Write: README.md）</text>
+<path d="M884 1069 V1056 a11 11 0 0 1 11 -11 H1007.816 a11 11 0 0 1 11 11 V1069 Z" fill="#4A5588"/>
+<text x="896.0" y="1061.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Notebook</text>
+<rect x="968.8" y="1049" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="977.8" y="1061.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">2</text>
+<circle cx="993.8" cy="1057.0" r="3.1" fill="#FFFFFF"/>
+<circle cx="1002.8" cy="1057.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="1254.0" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">↑2</text>
+<text x="1231.4" y="1061.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">feature/agent-view</text>
+<path d="M884 1069 H1260 V1168 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="884.0" y="1069.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<text x="898.0" y="1094.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">複数 Mac の統合ビュー</text>
+<rect x="1158.0" y="1081.5" width="90.0" height="17.0" rx="8.5" fill="#1F3A29"/>
+<circle cx="1168.0" cy="1090.0" r="3" fill="#6BDB8B"/>
+<text x="1177.0" y="1093.7" font-size="10.5" font-weight="600" fill="#6BDB8B" text-anchor="start">実行中 0:12</text>
+<text x="898.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="926.0" y="1111.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">Write: 図/案1-メニューバー.svg</text>
+<text x="898.0" y="1144.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">dry-run 表示を整理</text>
+<text x="1246.0" y="1143.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 1時間</text>
+<text x="898.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="926.0" y="1161.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<path d="M884 1214 V1201 a11 11 0 0 1 11 -11 H1015.52 a11 11 0 0 1 11 11 V1214 Z" fill="#4A5588"/>
+<text x="896.0" y="1206.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">DesignDocs</text>
+<rect x="985.5" y="1194" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="994.5" y="1206.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="1010.5" cy="1202.0" r="3" fill="none" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="1254.0" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">✎2</text>
+<text x="1231.4" y="1206.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main</text>
+<path d="M884 1214 H1260 V1263 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="884.0" y="1214.0" width="376.0" height="3.0" rx="0" fill="#4A5588"/>
+<rect x="888.0" y="1220.0" width="368.0" height="48.0" rx="11" fill="#31343B"/>
+<text x="898.0" y="1239.0" font-size="13" font-weight="600" fill="#ECEDF0" text-anchor="start">設計メモの更新</text>
+<rect x="1171.1" y="1226.5" width="76.9" height="17.0" rx="8.5" fill="#3A3D44"/>
+<text x="1179.1" y="1238.7" font-size="10.5" font-weight="600" fill="#B9BDC6" text-anchor="start">✓ 完了 3分</text>
+<text x="898.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">直近</text>
+<text x="926.0" y="1256.0" font-size="11" font-weight="400" fill="#A4A7AF" text-anchor="start">返答済み</text>
+<rect x="878.0" y="1285.0" width="388.0" height="83.0" rx="16" fill="#15161A"/>
+<path d="M884 1315 V1302 a11 11 0 0 1 11 -11 H982.112 a11 11 0 0 1 11 11 V1315 Z" fill="#55585F"/>
+<text x="896.0" y="1307.5" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="start">Viewer</text>
+<rect x="952.1" y="1295" width="18" height="16" rx="8" fill="#FFFFFF" fill-opacity=".24"/>
+<text x="961.1" y="1307.0" font-size="10.5" font-weight="600" fill="#FFFFFF" text-anchor="middle">1</text>
+<circle cx="977.1" cy="1303.0" r="3" fill="#FFFFFF" fill-opacity="0.45"/>
+<text x="1254.0" y="1307.5" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">main  待機中のみ</text>
+<path d="M884 1315 H1260 V1350 a12 12 0 0 1 -12 12 H896 a12 12 0 0 1 -12 -12 Z" fill="#2B2D33"/>
+<rect x="884.0" y="1315.0" width="376.0" height="3.0" rx="0" fill="#55585F"/>
+<text x="898.0" y="1342.0" font-size="13" font-weight="400" fill="#A4A7AF" text-anchor="start">（タイトル未取得）</text>
+<text x="1246.0" y="1341.7" font-size="10.5" font-weight="600" fill="#A4A7AF" text-anchor="end">待機 3時間</text>
+<text x="888.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="start">設定…</text>
+<text x="1256.0" y="1396.0" font-size="11" font-weight="500" fill="#A4A7AF" text-anchor="end">v0.1.3   更新を確認…</text>
+</svg>

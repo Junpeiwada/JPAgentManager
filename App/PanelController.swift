@@ -122,7 +122,7 @@ private struct PanelContent: View {
             if let message = model.lastError {
                 Text(message)
                     .font(.system(size: 11))
-                    .foregroundStyle(Theme.color(for: .waiting))
+                    .foregroundStyle(Theme.attentionTextColor)
                     .lineLimit(2)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 18)

@@ -19,7 +19,7 @@ enum GitInfo {
 
     /// Command Line Tools が無い Mac では /usr/bin/git の起動でインストールのダイアログが出るため、
     /// 最初に一度だけ xcode-select -p の成否で git が使えるかを判定する
-    private static let gitAvailable: Bool = {
+    static let gitAvailable: Bool = {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/xcode-select")
         process.arguments = ["-p"]

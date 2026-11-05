@@ -8,7 +8,7 @@ struct StatusCapsule: View {
     private var label: String {
         // 入力待ち（input needed）と許可待ちを区別する
         if session.status == .waiting, session.waitingFor == "input needed" { return "入力待ち" }
-        if session.completedUnseen { return "完了" }
+        if session.completedUnseen { return "✓ 完了" }
         return session.status.label
     }
 
@@ -20,18 +20,23 @@ struct StatusCapsule: View {
     }
 
     var body: some View {
-        Text(text)
-            .font(.system(size: 10.5, weight: .semibold))
-            .foregroundStyle(textColor)
-            .lineLimit(1)
-            .fixedSize()
+        HStack(spacing: 4) {
+            if session.status == .running {
+                Circle().fill(Theme.color(for: .running)).frame(width: 6, height: 6)
+            }
+            Text(text)
+                .font(.system(size: 10.5, weight: .semibold))
+                .foregroundStyle(textColor)
+                .lineLimit(1)
+                .fixedSize()
+        }
             .padding(.horizontal, 8)
             .frame(height: 17)
             .background(background)
     }
 
     private var textColor: Color {
-        if session.completedUnseen { return .white }
+        if session.completedUnseen { return Theme.completedColor }
         switch session.status {
         case .waiting: return .white
         case .running: return Theme.color(for: .running)
@@ -43,7 +48,7 @@ struct StatusCapsule: View {
     @ViewBuilder
     private var background: some View {
         if session.completedUnseen {
-            Capsule().fill(Theme.completedColor)
+            Capsule().fill(Theme.completedCapsuleFill)
         } else {
             statusBackground
         }
@@ -54,8 +59,11 @@ struct StatusCapsule: View {
         switch session.status {
         case .waiting:
             Capsule().fill(Theme.color(for: .waiting))
-        case .running, .idle:
-            Capsule().fill(Theme.color(for: session.status).opacity(Theme.capsuleFillOpacity))
+        case .running:
+            Capsule().fill(Theme.color(for: .running).opacity(Theme.capsuleFillOpacity))
+        case .idle:
+            // 待機は最も静かに、文字だけで出す
+            EmptyView()
         case .empty:
             Capsule().strokeBorder(Color(nsColor: .separatorColor), lineWidth: 1)
         }

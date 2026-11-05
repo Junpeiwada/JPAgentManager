@@ -14,12 +14,13 @@ enum SampleData {
                     statusSince: ago(minutes: minutes), title: title,
                     lastAction: action, lastPrompt: prompt, completedUnseen: unseen)
         }
-        func repo(_ name: String, branch: String?, _ sessions: [Session]) -> Repo {
-            Repo(id: "\(root)/\(name)", name: name, branch: branch, sessions: sessions)
+        func repo(_ name: String, branch: String?, status: GitStatus? = nil, _ sessions: [Session]) -> Repo {
+            Repo(id: "\(root)/\(name)", name: name, branch: branch, sessions: sessions, gitStatus: status)
         }
 
         return [
-            repo("PhotoSorter", branch: "main", [
+            repo("PhotoSorter", branch: "main",
+                 status: GitStatus(upstream: "origin/main", ahead: 1, behind: 3, changedFiles: 5), [
                 session("sample-photo-1", "PhotoSorter", .waiting, minutes: 2,
                         title: "写真選別画面にお気に入りフィルタを追加",
                         action: "Bash: npm run tauri build",
@@ -31,7 +32,8 @@ enum SampleData {
                         title: "README の手順を新UIに合わせて更新",
                         action: "返答済み（Write: README.md）", unseen: true),
             ]),
-            repo("Notebook", branch: "main", [
+            repo("Notebook", branch: "feature/agent-view",
+                 status: GitStatus(upstream: "origin/feature/agent-view", ahead: 2), [
                 session("sample-notebook-1", "Notebook", .running, minutes: 12,
                         title: "複数Macのエージェント統合ビュー",
                         action: "Write: 図/案1-メニューバー.svg"),
@@ -42,10 +44,12 @@ enum SampleData {
             repo("SensorDemo", branch: "main", [
                 session("sample-sensor-1", "SensorDemo", .empty, minutes: 5, title: nil),
             ]),
-            repo("Viewer", branch: "main", [
+            repo("Viewer", branch: "main",
+                 status: GitStatus(upstream: "origin/main", behind: 12, changedFiles: 2), [
                 session("sample-viewer-1", "Viewer", .idle, minutes: 180, title: nil, action: "返答済み"),
             ]),
-            repo("SoundKit", branch: "main", [
+            repo("SoundKit", branch: "main",
+                 status: GitStatus(upstream: "origin/main", fetchFailed: true), [
                 session("sample-sound-1", "SoundKit", .idle, minutes: 1500, title: nil, action: "返答済み"),
             ]),
         ]

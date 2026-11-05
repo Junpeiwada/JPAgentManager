@@ -5,12 +5,21 @@ struct FolderView: View {
     let repo: Repo
     var now: Date = Date()
     var onSelect: (Session) -> Void = { _ in }
+    /// 待機グループの中ならグレーの耳にする
+    var isInIdleGroup: Bool = false
+    /// 耳の右の表示を右端から離す幅（待機グループの見出しを避ける）
+    var gitSummaryTrailingInset: CGFloat = 0
 
-    private var color: Color { Theme.repoColor(for: repo.id) }
+    private var color: Color { isInIdleGroup ? Theme.idleFolderTabColor : Theme.folderTabColor }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            tab
+            HStack(spacing: 8) {
+                tab.layoutPriority(1)
+                Spacer(minLength: 0)
+                gitSummary
+                    .padding(.trailing, gitSummaryTrailingInset + 6)
+            }
             body_
         }
     }
@@ -42,10 +51,43 @@ struct FolderView: View {
         )
     }
 
+    // MARK: 耳の右（ブランチ・コミット差・変更ファイル数）
+    private var gitSummary: some View {
+        HStack(spacing: 5) {
+            if let branch = repo.branch {
+                Text(branch)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+            if let status = repo.gitStatus {
+                Group {
+                    if status.behind > 0 {
+                        Text("↓\(status.behind)")
+                            .fontWeight(.bold)
+                            .foregroundStyle(Theme.behindColor)
+                    }
+                    if status.ahead > 0 {
+                        Text("↑\(status.ahead)").foregroundStyle(.secondary)
+                    }
+                    if status.changedFiles > 0 {
+                        Text("✎\(status.changedFiles)").foregroundStyle(.secondary)
+                    }
+                    if status.fetchFailed {
+                        Image(systemName: "exclamationmark.icloud").foregroundStyle(.secondary)
+                    }
+                }
+                .fixedSize()
+            }
+        }
+        .font(.system(size: 11, weight: .medium))
+        .help(repo.gitStatus?.helpText ?? "")
+    }
+
     @ViewBuilder
     private func statusDot(_ session: Session) -> some View {
         if session.completedUnseen {
-            // 耳の色に緑やミントがあるので、白い縁で見分ける
+            // 耳の色と見分けるため白い縁を付ける
             Circle().fill(Theme.completedColor)
                 .overlay(Circle().strokeBorder(Color.white, lineWidth: 1))
                 .frame(width: 7, height: 7)
@@ -58,7 +100,9 @@ struct FolderView: View {
     private func plainDot(_ status: SessionStatus) -> some View {
         switch status {
         case .waiting:
-            Circle().fill(Theme.waitingDotColor).frame(width: 6, height: 6)
+            Circle().fill(Theme.waitingDotColor)
+                .overlay(Circle().strokeBorder(Color.white, lineWidth: 0.8))
+                .frame(width: 7, height: 7)
         case .running:
             Circle().fill(Color.white).frame(width: 6, height: 6)
         case .idle:

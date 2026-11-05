@@ -44,12 +44,12 @@ xcodebuild -scheme JPAgentManager -destination 'platform=macOS' test -only-testi
 
 ターゲットは3つ: アプリ `JPAgentManager`、フック用の補助プログラム `jpam-hook`（`HookHelper/`。アプリには同梱せず、テストのためだけにビルドされる）、テスト `JPAgentManagerTests`。
 
-データの流れ（アプリはどこにも書き込まない）:
+データの流れ（アプリが書き込むのは `git fetch` によるリモート追跡ブランチの更新だけ）:
 
 1. `SessionStore`（`App/Model/`）が 1 秒ごと＋sessions フォルダの監視で `refresh()` する。重い読み込みは背景キュー、結果の反映はメインスレッド
 2. 状態は `SessionRegistry` が `~/.claude/sessions/<PID>.json` から読む（busy / idle / waiting）。生きている PID だけを残す
 3. タイトル・直前の操作・最後のプロンプトは `TranscriptReader` が会話ログ（jsonl）から読む
-4. リポジトリのまとまりとブランチは `GitInfo`。遅いので別キューで非同期に取り、30 秒キャッシュする
+4. リポジトリのまとまりとブランチは `GitInfo`。遅いので別キューで非同期に取り、30 秒キャッシュする。コミット差・変更ファイル数は `GitStatusReader` で、開いているリポジトリの status を 30 秒ごと、`git fetch` を 5 分ごと（失敗後は 15 分後）に行う。fetch は認証の入力を求めず、`FETCH_HEAD` も書かない
 5. `SessionStore.build`（純粋関数）が突き合わせて `[Repo]` を作り、`Sorting` で並べる。テストはここを直接叩く
 6. `AppDelegate` が `@Published repos` を `PanelModel`（表示）と `Notifier`（状態変化からの通知）へ流す
 

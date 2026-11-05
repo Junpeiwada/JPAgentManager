@@ -144,8 +144,8 @@ final class StatusItemController: NSObject {
         return (x, rects)
     }
 
-    /// 「橙の点+許可待ち数 / 青の点+実行中数 /（緑の点+未確認の完了数）/ / タブ数」をカラーで描く。
-    /// emphasized のときは橙の点と数字の後ろに橙の角丸の下地を敷き、数字を白にする。
+    /// 「朱の点+許可待ち数 / 緑の点+実行中数 /（グレーの点+未確認の完了数）/ / タブ数」をカラーで描く。
+    /// emphasized のときは朱の点と数字の後ろに朱の角丸の下地を敷き、数字を白にする。
     /// 描画クロージャは表示のたびに呼ばれるので、NSColor.labelColor がメニューバーの外観に追従する
     private static func makeImage(waiting: Int, running: Int, completed: Int, total: Int, emphasized: Bool) -> NSImage {
         // 点の色は Theme と合わせる。項目の並びは layout と同じにする
@@ -170,7 +170,7 @@ final class StatusItemController: NSObject {
                     NSBezierPath(roundedRect: badge, xRadius: 5, yRadius: 5).fill()
                 }
                 if let color {
-                    // 下地が橙なので、点は白で描いて見分けがつくようにする
+                    // 下地が朱なので、点は白で描いて見分けがつくようにする
                     (onBadge ? NSColor.white : color).setFill()
                     NSBezierPath(ovalIn: NSRect(x: x, y: (rect.height - dotSize) / 2, width: dotSize, height: dotSize)).fill()
                     x += dotSize + dotGap

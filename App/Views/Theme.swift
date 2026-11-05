@@ -4,17 +4,22 @@ import SwiftUI
 /// 色と寸法の定義。色はシステムカラー中心でライト／ダークに自動で追従する
 enum Theme {
     // MARK: 状態の色
+    /// 許可待ちの朱。アイコンの背景色に近い。白字を載せるのでライト・ダークとも同じ濃さにする
+    private static let waitingColor = dynamicColor(light: 0xC4411C, dark: 0xC4411C)
+    /// 実行中の緑。カプセルの文字にも使うので、ライトでは読める濃さにする
+    private static let runningColor = dynamicColor(light: 0x1F7A3A, dark: 0x6BDB8B)
+
     static func color(for status: SessionStatus) -> Color {
         switch status {
-        case .waiting: return .orange
-        case .running: return .blue
+        case .waiting: return waitingColor
+        case .running: return runningColor
         case .idle: return .gray
         case .empty: return .secondary
         }
     }
 
-    // MARK: リポジトリの色（橙・青・黄に近い色は状態色や許可待ちの点と紛れるので入れない）
-    /// ライト／ダークで値を変える動的カラー。耳の上は白字なので、どちらも白字が読める濃さにする
+    // MARK: 動的カラー
+    /// ライト／ダークで値を変える色
     private static func dynamicColor(light: UInt32, dark: UInt32) -> Color {
         func ns(_ hex: UInt32) -> NSColor {
             NSColor(srgbRed: CGFloat((hex >> 16) & 0xFF) / 255,
@@ -26,31 +31,24 @@ enum Theme {
         })
     }
 
-    static let repoPalette: [Color] = [
-        dynamicColor(light: 0xAF52DE, dark: 0xA050D0),  // 紫
-        dynamicColor(light: 0x00A89F, dark: 0x00958D),  // ミント
-        dynamicColor(light: 0xA2845E, dark: 0x93764F),  // ブラウン
-        dynamicColor(light: 0xE0457B, dark: 0xD03A70),  // ピンク
-        dynamicColor(light: 0x3A9D4A, dark: 0x2F8A3E),  // 緑
-        dynamicColor(light: 0xB02A8F, dark: 0xA02380),  // 赤紫
-        dynamicColor(light: 0x7D8A2B, dark: 0x6E7A22),  // オリーブ
-    ]
+    // MARK: フォルダの耳
+    /// 全リポジトリ共通の藍色。耳の上は白字なので、どちらの外観でも白字が読める濃さにする
+    static let folderTabColor = dynamicColor(light: 0x4F5B93, dark: 0x4A5588)
+    /// 待機グループの耳のグレー
+    static let idleFolderTabColor = dynamicColor(light: 0x6B6F78, dark: 0x55585F)
 
-    /// repoID（NFC に正規化）の FNV-1a(32bit) ハッシュでパレットの添字を決める。起動をまたいで安定する
-    static func repoColorIndex(for repoID: String) -> Int {
-        var hash: UInt32 = 2166136261
-        for byte in repoID.precomposedStringWithCanonicalMapping.utf8 {
-            hash ^= UInt32(byte)
-            hash = hash &* 16777619
-        }
-        return Int(hash % UInt32(repoPalette.count))
-    }
+    // MARK: git の状態
+    /// プルが必要なコミット数の色。朱の文字色と同じ「あなたの番」の意味
+    static var behindColor: Color { attentionTextColor }
 
-    static func repoColor(for repoID: String) -> Color {
-        repoPalette[repoColorIndex(for: repoID)]
-    }
-
-    /// 許可待ちを示す点の黄色（耳の上で橙と紛れないよう黄）
+    // MARK: 許可待ち
+    /// 許可待ちの行の塗り
+    static let waitingRowFill = dynamicColor(light: 0xFBE7E0, dark: 0x46291E)
+    /// 許可待ちの行の「指示」の文字色
+    static let waitingPromptColor = dynamicColor(light: 0x963012, dark: 0xFFB59E)
+    /// パネルの地に載せる朱の文字色（エラー・プルが必要なコミット数）
+    static let attentionTextColor = dynamicColor(light: 0xB23A17, dark: 0xFF8F6E)
+    /// 許可待ちを示す点の黄色（藍の耳の上で目立つ色）
     static let waitingDotColor = Color(red: 1.0, green: 0.84, blue: 0.04)
 
     // MARK: 寸法
@@ -63,8 +61,6 @@ enum Theme {
     static let rowCornerRadius: CGFloat = 11
 
     // MARK: 不透明度（画面図の値）
-    /// 許可待ちの行の塗り
-    static let waitingRowFillOpacity: Double = 0.14
     /// tinted カプセルの塗り
     static let capsuleFillOpacity: Double = 0.14
 
@@ -76,10 +72,14 @@ enum Theme {
     })
     static let idleGroupPadding: CGFloat = 6
     static let idleGroupCornerRadius: CGFloat = 16
+    /// 右肩の「待機中のみ」が占める幅
+    static let idleGroupLabelInset: CGFloat = 66
 
     // MARK: 未確認の完了（FR-111）
-    /// 未確認の完了の色（行の塗り・カプセル・メニューバーの点）
-    static let completedColor = Color.green
+    /// 未確認の完了の色（カプセルの文字・メニューバーの点）。実行中の緑と紛れない地味なグレー
+    static let completedColor = dynamicColor(light: 0x4E5968, dark: 0xB9BDC6)
+    /// 未確認の完了のカプセルの塗り
+    static let completedCapsuleFill = dynamicColor(light: 0xE8EAED, dark: 0x3A3D44)
     /// 未確認の完了の行の塗り
-    static let completedRowFillOpacity: Double = 0.16
+    static let completedRowFill = dynamicColor(light: 0xF3F4F6, dark: 0x31343B)
 }

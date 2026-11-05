@@ -12,6 +12,8 @@ final class SessionStore: ObservableObject {
     private let sessionsDirectory: URL
     private let transcripts: TranscriptReader
     private let gitInfo: @Sendable (String) -> GitInfo.Info?
+    private let gitStatus: @Sendable (String) -> GitStatus?
+    private let gitFetch: @Sendable (String) -> Bool
     private let now: @Sendable () -> Date
 
     /// セッション・会話ログの読み込み用。git が遅くても状態の反映を止めないため、git とは別のキューにする
@@ -31,15 +33,33 @@ final class SessionStore: ObservableObject {
     private var gitPending: Set<String> = []
     private static let gitTTL: TimeInterval = 30
 
+    /// git ルート -> 前回の status と取得時刻
+    private var statusCache: [String: (status: GitStatus?, at: Date)] = [:]
+    private var statusPending: Set<String> = []
+    /// git ルート -> 次に fetch してよい時刻
+    private var nextFetchAt: [String: Date] = [:]
+    private var fetchPending: Set<String> = []
+    private var fetchFailedRoots: Set<String> = []
+    /// fetch は通信するので 1 件ずつ行う
+    private let fetchWorker = DispatchQueue(label: "SessionStore.fetch", qos: .utility)
+    private static let statusTTL: TimeInterval = 30
+    private static let fetchInterval: TimeInterval = 5 * 60
+    /// 失敗は認証のダイアログが原因のこともあるので、繰り返し出さないよう間隔を空ける
+    private static let fetchRetryInterval: TimeInterval = 15 * 60
+
     init(registry: SessionRegistry = SessionRegistry(),
          sessionsDirectory: URL = SessionRegistry.defaultDirectory,
          transcripts: TranscriptReader = TranscriptReader(),
          gitInfo: @escaping @Sendable (String) -> GitInfo.Info? = { GitInfo.info(for: $0) },
+         gitStatus: @escaping @Sendable (String) -> GitStatus? = { GitStatusReader.status(root: $0) },
+         gitFetch: @escaping @Sendable (String) -> Bool = { GitStatusReader.fetch(root: $0) },
          now: @escaping @Sendable () -> Date = { Date() }) {
         self.registry = registry
         self.sessionsDirectory = sessionsDirectory
         self.transcripts = transcripts
         self.gitInfo = gitInfo
+        self.gitStatus = gitStatus
+        self.gitFetch = gitFetch
         self.now = now
     }
 
@@ -88,6 +108,12 @@ final class SessionStore: ObservableObject {
         // git は前回の結果をそのまま使う（遅い問い合わせを待たない）
         var git: [String: GitInfo.Info] = [:]
         for (cwd, cached) in gitCache { if let info = cached.info { git[cwd] = info } }
+        var gitStatuses: [String: GitStatus] = [:]
+        for (root, cached) in statusCache {
+            guard var status = cached.status else { continue }
+            status.fetchFailed = fetchFailedRoots.contains(root)
+            gitStatuses[root] = status
+        }
 
         worker.async { [weak self] in
             let snapshot = registry.readSnapshot()
@@ -114,6 +140,7 @@ final class SessionStore: ObservableObject {
                 transcripts.forget(transcriptPath: path)
             }
             let built = SessionStore.build(entries: entries, summaries: summaries, git: git,
+                                           gitStatuses: gitStatuses,
                                            previous: previousSessions, now: now())
             let cwds = Set(entries.map(\.cwd))
 
@@ -126,6 +153,7 @@ final class SessionStore: ObservableObject {
                     if self.repos != built { self.repos = built }
                     if self.lastError != error { self.lastError = error }
                     self.requestGitInfo(for: cwds)
+                    self.requestGitStatus()
                     self.isRefreshing = false
                     if self.needsRefresh {
                         self.needsRefresh = false
@@ -161,11 +189,67 @@ final class SessionStore: ObservableObject {
         }
     }
 
+    /// 開いているリポジトリの status と fetch を、期限が来たものだけ別キューで行う。
+    /// 対象のルートは git の問い合わせ結果から決める（無くなった cwd は requestGitInfo が捨て済み）
+    private func requestGitStatus() {
+        let current = now()
+        let roots = Set(gitCache.values.compactMap { $0.info?.root })
+        for root in statusCache.keys where !roots.contains(root) { statusCache[root] = nil }
+        for root in nextFetchAt.keys where !roots.contains(root) { nextFetchAt[root] = nil }
+        fetchFailedRoots.formIntersection(roots)
+
+        let gitStatus = self.gitStatus
+        for root in roots where !statusPending.contains(root) {
+            if let cached = statusCache[root], current.timeIntervalSince(cached.at) < Self.statusTTL { continue }
+            statusPending.insert(root)
+            gitWorker.async { [weak self] in
+                let status = gitStatus(root)
+                DispatchQueue.main.async {
+                    MainActor.assumeIsolated {
+                        guard let self else { return }
+                        self.statusPending.remove(root)
+                        let changed = self.statusCache[root]?.status != status
+                        self.statusCache[root] = (status, self.now())
+                        if changed { self.refresh() }
+                    }
+                }
+            }
+        }
+
+        let gitFetch = self.gitFetch
+        for root in roots where !fetchPending.contains(root) {
+            // 上流が無ければコミット差を出せないので通信しない
+            guard statusCache[root]?.status?.upstream != nil else { continue }
+            if let next = nextFetchAt[root], current < next { continue }
+            fetchPending.insert(root)
+            fetchWorker.async { [weak self] in
+                let succeeded = gitFetch(root)
+                DispatchQueue.main.async {
+                    MainActor.assumeIsolated {
+                        guard let self else { return }
+                        self.fetchPending.remove(root)
+                        let wait = succeeded ? Self.fetchInterval : Self.fetchRetryInterval
+                        self.nextFetchAt[root] = self.now().addingTimeInterval(wait)
+                        if succeeded {
+                            self.fetchFailedRoots.remove(root)
+                        } else {
+                            self.fetchFailedRoots.insert(root)
+                        }
+                        // コミット差が変わるので、次の refresh ですぐ status を取り直す
+                        self.statusCache[root]?.at = .distantPast
+                        self.refresh()
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - 組み立て（純粋関数）
 
     nonisolated static func build(entries: [RegistryEntry],
                                   summaries: [String: TranscriptSummary],
                                   git: [String: GitInfo.Info],
+                                  gitStatuses: [String: GitStatus] = [:],
                                   previous: [String: Session] = [:],
                                   now: Date) -> [Repo] {
         var groups: [String: Repo] = [:]
@@ -210,7 +294,8 @@ final class SessionStore: ObservableObject {
             let id = info?.root ?? entry.cwd
             if groups[id] == nil {
                 let name = (id as NSString).lastPathComponent
-                groups[id] = Repo(id: id, name: name.isEmpty ? id : name, branch: info?.branch, sessions: [])
+                groups[id] = Repo(id: id, name: name.isEmpty ? id : name, branch: info?.branch, sessions: [],
+                                  gitStatus: gitStatuses[id])
                 order.append(id)
             }
             groups[id]?.sessions.append(session)

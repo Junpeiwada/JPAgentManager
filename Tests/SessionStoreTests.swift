@@ -170,6 +170,83 @@ final class SessionStoreTests: XCTestCase {
         XCTAssertEqual(calls.value, 1)
     }
 
+    // MARK: - git の状態と fetch
+
+    func testGitStatusがルートのRepoに入る() {
+        let status = GitStatus(upstream: "origin/main", ahead: 1, behind: 2, changedFiles: 3)
+        let repos = SessionStore.build(entries: [entry("s", cwd: "/work/a/sub")], summaries: [:],
+                                       git: ["/work/a/sub": GitInfo.Info(root: "/work/a", branch: "main")],
+                                       gitStatuses: ["/work/a": status], now: now)
+        XCTAssertEqual(repos[0].gitStatus, status)
+    }
+
+    /// 状態が落ち着くまでメインのランループを回す
+    @MainActor
+    private func settle(_ store: SessionStore) {
+        for _ in 0..<4 {
+            store.refresh()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+        }
+    }
+
+    @MainActor
+    private func makeGitStore(status: GitStatus?, fetchSucceeds: Bool, clock: Clock, fetches: Counter) throws -> SessionStore {
+        let dir = try makeSessionsDir()
+        return SessionStore(registry: SessionRegistry(directory: dir, projectsDirectory: dir),
+                            sessionsDirectory: dir,
+                            gitInfo: { _ in GitInfo.Info(root: "/work/a", branch: "main") },
+                            gitStatus: { _ in status },
+                            gitFetch: { _ in fetches.increment(); return fetchSucceeds },
+                            now: { clock.value })
+    }
+
+    @MainActor
+    func testFetchは5分ごと() throws {
+        let clock = Clock(), fetches = Counter()
+        let store = try makeGitStore(status: GitStatus(upstream: "origin/main", behind: 2),
+                                     fetchSucceeds: true, clock: clock, fetches: fetches)
+        settle(store)
+        XCTAssertEqual(fetches.value, 1)
+        XCTAssertEqual(store.repos.first?.gitStatus?.behind, 2)
+        XCTAssertEqual(store.repos.first?.gitStatus?.fetchFailed, false)
+
+        clock.advance(299)
+        settle(store)
+        XCTAssertEqual(fetches.value, 1)
+
+        clock.advance(2)
+        settle(store)
+        XCTAssertEqual(fetches.value, 2)
+    }
+
+    @MainActor
+    func testFetchの失敗は表示して15分後に再試行() throws {
+        let clock = Clock(), fetches = Counter()
+        let store = try makeGitStore(status: GitStatus(upstream: "origin/main"),
+                                     fetchSucceeds: false, clock: clock, fetches: fetches)
+        settle(store)
+        XCTAssertEqual(fetches.value, 1)
+        XCTAssertEqual(store.repos.first?.gitStatus?.fetchFailed, true)
+
+        clock.advance(301)
+        settle(store)
+        XCTAssertEqual(fetches.value, 1)
+
+        clock.advance(600)
+        settle(store)
+        XCTAssertEqual(fetches.value, 2)
+    }
+
+    @MainActor
+    func test上流が無ければFetchしない() throws {
+        let clock = Clock(), fetches = Counter()
+        let store = try makeGitStore(status: GitStatus(changedFiles: 1),
+                                     fetchSucceeds: true, clock: clock, fetches: fetches)
+        settle(store)
+        XCTAssertEqual(fetches.value, 0)
+        XCTAssertEqual(store.repos.first?.gitStatus?.changedFiles, 1)
+    }
+
     @MainActor
     func testフォルダが無ければエラーにしない() {
         let dir = FileManager.default.temporaryDirectory.appendingPathComponent("SessionStoreTests-none-\(UUID().uuidString)")
@@ -180,6 +257,13 @@ final class SessionStoreTests: XCTestCase {
         XCTAssertNil(store.lastError)
         XCTAssertTrue(store.repos.isEmpty)
     }
+}
+
+private final class Clock: @unchecked Sendable {
+    private let lock = NSLock()
+    private var current = Date(timeIntervalSince1970: 1_000_000)
+    func advance(_ seconds: TimeInterval) { lock.lock(); current += seconds; lock.unlock() }
+    var value: Date { lock.lock(); defer { lock.unlock() }; return current }
 }
 
 private final class Counter: @unchecked Sendable {

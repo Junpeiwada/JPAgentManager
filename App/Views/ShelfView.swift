@@ -39,7 +39,11 @@ struct ShelfView: View {
             Spacer(minLength: 8)
             let waiting = sessions.filter { $0.status == .waiting }.count
             let running = sessions.filter { $0.status == .running }.count
-            summaryCapsule("許可待ち \(waiting)", dot: Theme.color(for: .waiting))
+            if waiting > 0 {
+                waitingCapsule(waiting)
+            } else {
+                summaryCapsule("許可待ち 0", dot: Theme.color(for: .waiting))
+            }
             summaryCapsule("実行中 \(running)", dot: Theme.color(for: .running))
             let completed = sessions.filter(\.completedUnseen).count
             if completed > 0 {
@@ -48,6 +52,18 @@ struct ShelfView: View {
             summaryCapsule("タブ \(sessions.count)", dot: nil)
         }
         .padding(.horizontal, 4)
+    }
+
+    /// 許可待ちが 1 件以上のときだけ朱で塗りつぶす
+    private func waitingCapsule(_ count: Int) -> some View {
+        Text("許可待ち \(count)")
+            .font(.system(size: 11, weight: .bold))
+            .foregroundStyle(.white)
+            .lineLimit(1)
+            .fixedSize()
+            .padding(.horizontal, 8)
+            .frame(height: 20)
+            .background(Capsule().fill(Theme.color(for: .waiting)))
     }
 
     private func summaryCapsule(_ text: String, dot: Color?) -> some View {
@@ -68,7 +84,11 @@ struct ShelfView: View {
     /// 1枚のグレーの背景に載せる。背景の余白は外へはみ出させ、フォルダの幅を他と揃える
     private func idleGroup(_ idleRepos: [Repo]) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            ForEach(idleRepos) { folder($0) }
+            ForEach(idleRepos) { repo in
+                // 1つ目のフォルダの耳の右には「待機中のみ」が重なるので避ける
+                FolderView(repo: repo, now: now, onSelect: onSelect, isInIdleGroup: true,
+                           gitSummaryTrailingInset: repo.id == idleRepos.first?.id ? Theme.idleGroupLabelInset : 0)
+            }
         }
         .padding(Theme.idleGroupPadding)
         .background(
