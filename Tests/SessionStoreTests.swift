@@ -27,6 +27,15 @@ final class SessionStoreTests: XCTestCase {
         XCTAssertNil(firstSession(entry("s"), summary()).entrypoint)
     }
 
+    func testサブエージェント数がSessionに入る() {
+        let e = entry("s")
+        let built = SessionStore.build(entries: [e, entry("t")], summaries: [:], git: [:],
+                                       subagents: ["s": 3], now: now)
+        let sessions = Dictionary(uniqueKeysWithValues: built.flatMap(\.sessions).map { ($0.id, $0) })
+        XCTAssertEqual(sessions["s"]?.runningAgents, 3)
+        XCTAssertEqual(sessions["t"]?.runningAgents, 0)
+    }
+
     func test状態の対応() {
         XCTAssertEqual(firstSession(entry("s", status: .busy), summary()).status, .running)
         XCTAssertEqual(firstSession(entry("s", status: .waiting(reason: "permission prompt")), summary()).status, .waiting)

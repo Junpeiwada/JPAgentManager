@@ -9,10 +9,11 @@ enum SampleData {
         func ago(minutes: Double) -> Date { now.addingTimeInterval(-minutes * 60) }
         func session(_ key: String, _ repo: String, _ status: SessionStatus, minutes: Double,
                      title: String?, action: String? = nil, prompt: String? = nil,
-                     unseen: Bool = false) -> Session {
+                     unseen: Bool = false, agents: Int = 0) -> Session {
             Session(id: key, pid: nil, cwd: "\(root)/\(repo)", status: status,
                     statusSince: ago(minutes: minutes), title: title,
-                    lastAction: action, lastPrompt: prompt, completedUnseen: unseen)
+                    lastAction: action, lastPrompt: prompt, completedUnseen: unseen,
+                    runningAgents: agents)
         }
         func repo(_ name: String, branch: String?, status: GitStatus? = nil, _ sessions: [Session]) -> Repo {
             Repo(id: "\(root)/\(name)", name: name, branch: branch, sessions: sessions, gitStatus: status)
@@ -27,7 +28,7 @@ enum SampleData {
                         prompt: "フィルタの状態を localStorage に保存して"),
                 session("sample-photo-2", "PhotoSorter", .running, minutes: 45,
                         title: "画像補正パラメータの比較実験",
-                        action: "Edit: src/filter/config.ts"),
+                        action: "Edit: src/filter/config.ts", agents: 3),
                 session("sample-photo-3", "PhotoSorter", .idle, minutes: 25,
                         title: "README の手順を新UIに合わせて更新",
                         action: "返答済み（Write: README.md）", unseen: true),

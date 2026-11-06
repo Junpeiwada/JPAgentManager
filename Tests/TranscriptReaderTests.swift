@@ -92,6 +92,24 @@ final class TranscriptReaderTests: XCTestCase {
         XCTAssertTrue(action?.hasSuffix("…") == true)
     }
 
+    func test_AskUserQuestionは1問目の本文を出す() throws {
+        let path = tempFile()
+        try append("{\"type\":\"assistant\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"AskUserQuestion\",\"input\":{\"questions\":[{\"question\":\"どの案にしますか？\",\"header\":\"案\",\"options\":[{\"label\":\"1: A\"}]}]}}]}}\n", to: path)
+        XCTAssertEqual(TranscriptReader().summary(transcriptPath: path, cwd: nil).lastAction, "質問: どの案にしますか？")
+    }
+
+    func test_AskUserQuestionが複数問なら残りの数を添える() throws {
+        let path = tempFile()
+        try append("{\"type\":\"assistant\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"AskUserQuestion\",\"input\":{\"questions\":[{\"question\":\"色は？\"},{\"question\":\"形は？\"},{\"question\":\"大きさは？\"}]}}]}}\n", to: path)
+        XCTAssertEqual(TranscriptReader().summary(transcriptPath: path, cwd: nil).lastAction, "質問: 色は？（他2問）")
+    }
+
+    func test_AskUserQuestionの形が違えば名前だけ() throws {
+        let path = tempFile()
+        try append("{\"type\":\"assistant\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"AskUserQuestion\",\"input\":{\"questions\":\"壊れた形\"}}]}}\n", to: path)
+        XCTAssertEqual(TranscriptReader().summary(transcriptPath: path, cwd: nil).lastAction, "AskUserQuestion")
+    }
+
     func test_名前だけのツール() throws {
         let path = tempFile()
         try append("{\"type\":\"assistant\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"TodoWrite\",\"input\":{}}]}}\n", to: path)

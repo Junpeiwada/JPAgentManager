@@ -185,6 +185,11 @@ final class TranscriptReader: @unchecked Sendable {
             return input["command"] as? String
         case "Grep", "Glob":
             return input["pattern"] as? String
+        case "AskUserQuestion":
+            // 1問目の本文だけ出す。2問以上あれば残りの数を添える
+            guard let questions = input["questions"] as? [[String: Any]],
+                  let first = questions.first?["question"] as? String, !first.isEmpty else { return nil }
+            return questions.count > 1 ? "\(first)（他\(questions.count - 1)問）" : first
         default:
             return nil
         }
@@ -207,7 +212,10 @@ final class TranscriptReader: @unchecked Sendable {
             default:
                 break
             }
-            if !value.isEmpty { text = "\(name): \(value)" }
+            if !value.isEmpty {
+                let label = name == "AskUserQuestion" ? "質問" : name
+                text = "\(label): \(value)"
+            }
         }
         let limit = 80
         if text.count > limit { text = String(text.prefix(limit)) + "…" }

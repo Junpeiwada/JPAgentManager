@@ -129,11 +129,14 @@ final class SessionStore: ObservableObject {
             }
 
             var summaries: [String: TranscriptSummary] = [:]
+            var subagents: [String: Int] = [:]
             var paths: Set<String> = []
+            let current = now()
             for entry in entries {
                 guard let url = registry.transcriptURL(for: entry) else { continue }
                 paths.insert(url.path)
                 summaries[entry.sessionID] = transcripts.summary(transcriptPath: url.path, cwd: entry.cwd)
+                subagents[entry.sessionID] = SubagentCounter.runningCount(transcriptPath: url.path, now: current)
             }
             // 前回あって今回無い会話ログのパスを忘れる
             for path in previousPaths.subtracting(paths) {
@@ -141,7 +144,8 @@ final class SessionStore: ObservableObject {
             }
             let built = SessionStore.build(entries: entries, summaries: summaries, git: git,
                                            gitStatuses: gitStatuses,
-                                           previous: previousSessions, now: now())
+                                           subagents: subagents,
+                                           previous: previousSessions, now: current)
             let cwds = Set(entries.map(\.cwd))
 
             DispatchQueue.main.async {
@@ -250,6 +254,7 @@ final class SessionStore: ObservableObject {
                                   summaries: [String: TranscriptSummary],
                                   git: [String: GitInfo.Info],
                                   gitStatuses: [String: GitStatus] = [:],
+                                  subagents: [String: Int] = [:],
                                   previous: [String: Session] = [:],
                                   now: Date) -> [Repo] {
         var groups: [String: Repo] = [:]
@@ -288,7 +293,8 @@ final class SessionStore: ObservableObject {
                 lastAction: lastAction,
                 lastPrompt: summary?.lastPrompt,
                 waitingFor: waitingFor,
-                entrypoint: entry.entrypoint)
+                entrypoint: entry.entrypoint,
+                runningAgents: subagents[entry.sessionID] ?? 0)
 
             let info = git[entry.cwd]
             let id = info?.root ?? entry.cwd

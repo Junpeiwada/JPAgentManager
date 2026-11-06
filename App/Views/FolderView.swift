@@ -31,12 +31,6 @@ struct FolderView: View {
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(.white)
                 .lineLimit(1)
-            Text("\(repo.sessions.count)")
-                .font(.system(size: 10.5, weight: .semibold))
-                .foregroundStyle(.white)
-                .padding(.horizontal, 5)
-                .frame(minWidth: 18, minHeight: 16)
-                .background(Capsule().fill(Color.white.opacity(0.28)))
             HStack(spacing: 3) {
                 ForEach(repo.sessions) { statusDot($0) }
             }

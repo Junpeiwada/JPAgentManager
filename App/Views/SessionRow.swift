@@ -17,6 +17,18 @@ struct SessionRow: View {
         text.split(whereSeparator: \.isNewline).joined(separator: " ")
     }
 
+    /// 動いているサブエージェントの数（状態カプセルの左に出す）
+    private func agentBadge(_ count: Int) -> some View {
+        Text("Agent \(count)")
+            .font(.system(size: 10.5, weight: .semibold))
+            .foregroundStyle(Color(nsColor: .secondaryLabelColor))
+            .lineLimit(1)
+            .fixedSize()
+            .padding(.horizontal, 7)
+            .frame(height: 17)
+            .overlay(Capsule().strokeBorder(Color(nsColor: .separatorColor), lineWidth: 1))
+    }
+
     /// title が無いときは、まだ指示なしの空タブだけ専用の文言。それ以外は直近の指示、無ければ未取得
     private var displayTitle: String {
         if let title = session.title, !title.isEmpty { return Self.oneLine(title) }
@@ -35,6 +47,9 @@ struct SessionRow: View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                     Spacer(minLength: 0)
+                    if session.runningAgents > 0 {
+                        agentBadge(session.runningAgents)
+                    }
                     StatusCapsule(session: session, now: now)
                 }
                 if let action = session.lastAction {
