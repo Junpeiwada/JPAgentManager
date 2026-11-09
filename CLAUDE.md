@@ -55,7 +55,7 @@ xcodebuild -scheme JPAgentManager -destination 'platform=macOS' test -only-testi
 
 画面は SwiftUI の `MenuBarExtra` ではなく `NSStatusItem`（`StatusItemController`、件数を描いた画像）＋`NSPanel`（`PanelController`）。中身の SwiftUI は `App/Views/`。
 
-前面化（`Focuser`）は VSCode のセッション（`entrypoint == "claude-vscode"`）だけ。`code` CLI をフルパスで呼んで作業フォルダの窓を前に出す（タブまでは選べない）。CLI セッションは対象外。
+前面化（`Focuser`）は VSCode のセッション（`entrypoint == "claude-vscode"`）だけ。`open -b com.microsoft.VSCode <作業フォルダ>` で作業フォルダの窓を前に出す（タブまでは選べない）。`code` CLI は Electron を2つ起動するので 1 秒ほどかかり、使わない。CLI セッションは対象外。
 
 `App/Setup/HookInstaller.swift`・`App/Sources/HookEventReader.swift`・`App/Sources/ProcessScanner.swift` と `HookHelper/` は、状態の取得元をフックから sessions ファイルに切り替える前の実装で、いまのアプリからは呼ばれていない（テストだけ残っている）。`jpam-hook` はアプリに同梱しないので、テストはビルド成果物の置き場所（アプリと同じフォルダ）から読む。
 

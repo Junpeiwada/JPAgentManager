@@ -21,8 +21,8 @@
   <text x="124" y="312" font-size="12" fill="#5F6368" text-anchor="middle">~/.claude/projects/…（読むだけ）</text>
 
   <rect x="296" y="320" width="200" height="64" rx="8" fill="#FEF3E2" stroke="#E08A00" stroke-width="2"/>
-  <text x="396" y="348" font-size="14" fill="#202124" text-anchor="middle">code CLI</text>
-  <text x="396" y="368" font-size="12" fill="#5F6368" text-anchor="middle">code &lt;作業フォルダ&gt;</text>
+  <text x="396" y="348" font-size="14" fill="#202124" text-anchor="middle">open コマンド</text>
+  <text x="396" y="368" font-size="12" fill="#5F6368" text-anchor="middle">open -b com.microsoft.VSCode</text>
 
   <!-- アプリ（入れ子） -->
   <rect x="560" y="56" width="384" height="368" rx="10" fill="none" stroke="#3B6FD8" stroke-width="2" stroke-dasharray="6 4"/>

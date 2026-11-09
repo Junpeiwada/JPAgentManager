@@ -20,10 +20,10 @@ enum FocusError: Error, Equatable {
 }
 
 /// セッションの作業フォルダを開いている VSCode の窓を前に出す。
-/// 重いので、メインスレッドを止めないよう背景のキューから呼ぶこと
+/// 外部プロセスの終了を最大 5 秒待つので、メインスレッドを止めないよう背景のキューから呼ぶこと
 struct Focuser {
-    var codeCLI: URL = URL(fileURLWithPath: "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code")
-    var fileExists: (String) -> Bool = { FileManager.default.fileExists(atPath: $0) }
+    static let openCommand = URL(fileURLWithPath: "/usr/bin/open")
+    static let bundleID = "com.microsoft.VSCode"
     /// 作業フォルダがディレクトリとして存在するか
     var directoryExists: (String) -> Bool = {
         var isDir: ObjCBool = false
@@ -37,22 +37,12 @@ struct Focuser {
         let cwd = (session.cwd as NSString).standardizingPath
         guard cwd.hasPrefix("/"), directoryExists(cwd) else { return .failure(.folderMissing(cwd)) }
 
-        // code コマンドは PATH に無いのでフルパスで呼ぶ。無ければ open で代用する
-        let url: URL
-        let args: [String]
-        if fileExists(codeCLI.path) {
-            url = codeCLI
-            args = [cwd]
-        } else {
-            url = URL(fileURLWithPath: "/usr/bin/open")
-            args = ["-b", "com.microsoft.VSCode", cwd]
-        }
+        // `code` CLI は Electron を2つ起動して既存の窓へ引数を渡すので 1 秒ほどかかる。
+        // open -b なら動いている VSCode に「開く」イベントを送るだけで、開いている窓が前に出る（約 0.1 秒）
         do {
-            let code = try run(url, args)
-            if code == 0 { return .success(()) }
-            // open も失敗した（VSCode 自体が無い）場合
-            if url.path == "/usr/bin/open" { return .failure(.vscodeMissing) }
-            return .failure(.launchFailed("終了コード \(code)"))
+            let code = try run(Focuser.openCommand, ["-b", Focuser.bundleID, cwd])
+            // open が失敗するのは多くは VSCode が入っていないとき
+            return code == 0 ? .success(()) : .failure(.vscodeMissing)
         } catch let error as FocusError {
             return .failure(error)
         } catch {
@@ -65,7 +55,7 @@ struct Focuser {
         let process = Process()
         process.executableURL = url
         process.arguments = args
-        // VSCode の統合ターミナルから起動されても、その端末の窓へ要求が飛ばないようにする
+        // open は環境変数を VSCode に渡さないが、念のため VSCode 由来の変数は除いておく
         process.environment = ProcessInfo.processInfo.environment.filter {
             !$0.key.hasPrefix("VSCODE_") && $0.key != "ELECTRON_RUN_AS_NODE"
         }

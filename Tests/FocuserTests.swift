@@ -21,24 +21,31 @@ final class FocuserTests: XCTestCase {
 
     private func focuser(calls: Calls, existing: Set<String>, exit: Int32 = 0) -> Focuser {
         var f = Focuser()
-        f.fileExists = { existing.contains($0) }
         f.directoryExists = { existing.contains($0) }
         f.run = { url, args in calls.list.append((url, args)); return exit }
         return f
     }
 
-    func test正しい引数でcodeを呼ぶ() {
+    func test作業フォルダをopenでVSCodeに渡す() {
         let calls = Calls()
-        let f = focuser(calls: calls, existing: ["/work/a", Focuser().codeCLI.path])
+        let f = focuser(calls: calls, existing: ["/work/a"])
         assertSuccess(f.focus(session()))
         XCTAssertEqual(calls.list.count, 1)
-        XCTAssertEqual(calls.list[0].0, f.codeCLI)
-        XCTAssertEqual(calls.list[0].1, ["/work/a"])
+        XCTAssertEqual(calls.list[0].0.path, "/usr/bin/open")
+        XCTAssertEqual(calls.list[0].1, ["-b", "com.microsoft.VSCode", "/work/a"])
+    }
+
+    func test正規化した作業フォルダを渡す() {
+        let calls = Calls()
+        let f = focuser(calls: calls, existing: ["/work/a"])
+        assertSuccess(f.focus(session(cwd: "/work/a/")))
+        assertSuccess(f.focus(session(cwd: "/work/x/../a")))
+        XCTAssertEqual(calls.list.map { $0.1.last }, ["/work/a", "/work/a"])
     }
 
     func testVSCode以外は呼ばない() {
         let calls = Calls()
-        let f = focuser(calls: calls, existing: ["/work/a", Focuser().codeCLI.path])
+        let f = focuser(calls: calls, existing: ["/work/a"])
         assertFailure(f.focus(session(entrypoint: "cli")), .notVSCode("cli"))
         assertFailure(f.focus(session(entrypoint: nil)), .notVSCode(nil))
         XCTAssertTrue(calls.list.isEmpty)
@@ -46,32 +53,18 @@ final class FocuserTests: XCTestCase {
 
     func testフォルダが無い() {
         let calls = Calls()
-        let f = focuser(calls: calls, existing: [Focuser().codeCLI.path])
+        let f = focuser(calls: calls, existing: [])
         assertFailure(f.focus(session()), .folderMissing("/work/a"))
         XCTAssertTrue(calls.list.isEmpty)
     }
 
-    func testCLIが無ければopenで代用する() {
-        let calls = Calls()
-        let f = focuser(calls: calls, existing: ["/work/a"])
-        assertSuccess(f.focus(session()))
-        XCTAssertEqual(calls.list[0].0.path, "/usr/bin/open")
-        XCTAssertEqual(calls.list[0].1, ["-b", "com.microsoft.VSCode", "/work/a"])
-    }
-
-    func testCLIが無くopenも失敗ならvscodeMissing() {
+    func testopenが失敗ならvscodeMissing() {
         let f = focuser(calls: Calls(), existing: ["/work/a"], exit: 1)
         assertFailure(f.focus(session()), .vscodeMissing)
     }
 
-    func test終了コードが0以外ならlaunchFailed() {
-        let f = focuser(calls: Calls(), existing: ["/work/a", Focuser().codeCLI.path], exit: 3)
-        guard case .failure(.launchFailed) = f.focus(session()) else { return XCTFail("launchFailed になるはず") }
-    }
-
     func test起動で例外ならlaunchFailed() {
         var f = Focuser()
-        f.fileExists = { _ in true }
         f.directoryExists = { _ in true }
         f.run = { _, _ in throw NSError(domain: "t", code: 1) }
         guard case .failure(.launchFailed) = f.focus(session()) else { return XCTFail("launchFailed になるはず") }
@@ -80,11 +73,10 @@ final class FocuserTests: XCTestCase {
     func test危険なcwdは起動しない() {
         let calls = Calls()
         // "-" 始まり・相対パスは存在していても通さない。ファイル（ディレクトリでない）も通さない
-        var f = focuser(calls: calls, existing: ["-n", "rel/dir", Focuser().codeCLI.path])
+        var f = focuser(calls: calls, existing: ["-n", "rel/dir"])
         assertFailure(f.focus(session(cwd: "-n")), .folderMissing("-n"))
         assertFailure(f.focus(session(cwd: "rel/dir")), .folderMissing("rel/dir"))
         f.directoryExists = { _ in false }
-        f.fileExists = { _ in true }
         assertFailure(f.focus(session(cwd: "/work/file.txt")), .folderMissing("/work/file.txt"))
         XCTAssertTrue(calls.list.isEmpty)
     }
@@ -97,7 +89,6 @@ final class FocuserTests: XCTestCase {
 
     func testnoResponseはfocusの失敗として返る() {
         var f = Focuser()
-        f.fileExists = { _ in true }
         f.directoryExists = { _ in true }
         f.run = { _, _ in throw FocusError.noResponse }
         assertFailure(f.focus(session()), .noResponse)
