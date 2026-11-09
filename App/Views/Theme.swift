@@ -37,6 +37,15 @@ enum Theme {
     /// 待機グループの耳のグレー
     static let idleFolderTabColor = dynamicColor(light: 0x6B6F78, dark: 0x55585F)
 
+    // MARK: フォルダの影
+    /// 耳＋本体に落とす薄い影。ダークは見えにくいので濃くする
+    static let folderShadowColor = Color(nsColor: NSColor(name: nil) { appearance in
+        let isDark = appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+        return NSColor.black.withAlphaComponent(isDark ? 0.35 : 0.12)
+    })
+    static let folderShadowRadius: CGFloat = 2.5
+    static let folderShadowY: CGFloat = 1
+
     // MARK: git の状態
     /// プルが必要なコミット数の色。朱の文字色と同じ「あなたの番」の意味
     static var behindColor: Color { attentionTextColor }

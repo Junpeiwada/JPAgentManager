@@ -13,15 +13,25 @@ struct FolderView: View {
     private var color: Color { isInIdleGroup ? Theme.idleFolderTabColor : Theme.folderTabColor }
 
     var body: some View {
+        // 耳と本体をまとめて 1 枚の影を落とす。耳の右の文字に影が付かないよう、
+        // 行の中には幅取り用の透明なコピーを置き、本物は影の外から重ねる
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 8) {
                 tab.layoutPriority(1)
                 Spacer(minLength: 0)
-                gitSummary
-                    .padding(.trailing, gitSummaryTrailingInset + 6)
+                gitSummaryPlaced.hidden()
             }
             body_
         }
+        .compositingGroup()
+        .shadow(color: Theme.folderShadowColor, radius: Theme.folderShadowRadius, y: Theme.folderShadowY)
+        .overlay(alignment: .topTrailing) {
+            gitSummaryPlaced.frame(height: 24)
+        }
+    }
+
+    private var gitSummaryPlaced: some View {
+        gitSummary.padding(.trailing, gitSummaryTrailingInset + 6)
     }
 
     // MARK: 耳（上の角だけ丸い）
