@@ -294,6 +294,7 @@ final class SessionStore: ObservableObject {
                 lastPrompt: summary?.lastPrompt,
                 waitingFor: waitingFor,
                 entrypoint: entry.entrypoint,
+                backgroundShell: entry.status == .shell,
                 runningAgents: subagents[entry.sessionID] ?? 0)
 
             let info = git[entry.cwd]
@@ -311,7 +312,7 @@ final class SessionStore: ObservableObject {
 
     private nonisolated static func status(of entry: RegistryEntry, summary: TranscriptSummary?) -> SessionStatus {
         switch entry.status {
-        case .busy: return .running
+        case .busy, .shell: return .running
         case .waiting: return .waiting
         case .unknown: return .idle
         case .idle:

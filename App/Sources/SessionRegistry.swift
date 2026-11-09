@@ -4,6 +4,7 @@ import Foundation
 /// ~/.claude/sessions/<PID>.json に書かれた状態
 enum RegistryStatus: Equatable {
     case busy
+    case shell                      // 返答は済んだが、バックグラウンドの Bash（run_in_background）がまだ動いている
     case idle
     case waiting(reason: String?)   // "permission prompt" / "input needed"
     case unknown(String?)           // 想定外の文字列、または欠け
@@ -201,6 +202,7 @@ final class SessionRegistry: @unchecked Sendable {
         let status: RegistryStatus
         switch rawStatus {
         case "busy": status = .busy
+        case "shell": status = .shell
         case "idle": status = .idle
         case "waiting": status = .waiting(reason: obj["waitingFor"] as? String)
         default: status = .unknown(rawStatus)

@@ -43,6 +43,14 @@ final class SessionStoreTests: XCTestCase {
         XCTAssertEqual(firstSession(entry("s", status: .unknown("x")), nil).status, .idle)
     }
 
+    func testShellは実行中として扱い印を立てる() {
+        let shell = firstSession(entry("s", status: .shell), summary())
+        XCTAssertEqual(shell.status, .running)
+        XCTAssertTrue(shell.backgroundShell)
+        XCTAssertFalse(firstSession(entry("s", status: .busy), summary()).backgroundShell)
+        XCTAssertFalse(firstSession(entry("s", status: .idle), summary()).backgroundShell)
+    }
+
     func testIdleで会話ログ無しまたは指示無しは空() {
         XCTAssertEqual(firstSession(entry("s"), nil).status, .empty)
         XCTAssertEqual(firstSession(entry("s"), summary(title: nil, prompt: nil, action: "Read: a")).status, .empty)

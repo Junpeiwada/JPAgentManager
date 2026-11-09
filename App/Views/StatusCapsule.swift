@@ -9,6 +9,7 @@ struct StatusCapsule: View {
         // 入力待ち（input needed）と許可待ちを区別する
         if session.status == .waiting, session.waitingFor == "input needed" { return "入力待ち" }
         if session.completedUnseen { return "✓ 完了" }
+        if session.status == .running, session.backgroundShell { return "シェル実行中" }
         return session.status.label
     }
 
@@ -26,6 +27,7 @@ struct StatusCapsule: View {
             }
             Text(text)
                 .font(.system(size: 10.5, weight: .semibold))
+                .monospacedDigit()   // 毎秒変わる経過時間で幅がガタつかないように
                 .foregroundStyle(textColor)
                 .lineLimit(1)
                 .fixedSize()

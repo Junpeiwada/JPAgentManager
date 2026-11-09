@@ -30,16 +30,18 @@ struct Session: Identifiable, Hashable {
     var lastPrompt: String?   // 最後に送った指示（許可待ちの行だけ表示）
     var waitingFor: String? = nil  // 待ちの理由（"permission prompt" / "input needed"）。waiting のときだけ
     var entrypoint: String? = nil  // 起動元（"claude-vscode" など）。前面化できるのは claude-vscode だけ
+    var backgroundShell: Bool = false  // 実行中のうち、返答は済んでバックグラウンドの Bash だけが動いている（status "shell"）
     var completedUnseen: Bool = false  // 実行中→待機に変わり、まだ行をクリックしていない（FR-111）
     var runningAgents: Int = 0     // 動いているサブエージェントの数（SubagentCounter）
 
-    /// 経過時間の表示。実行中だけ「H:MM」（例 0:45、1:05）。
+    /// 経過時間の表示。実行中だけ秒まで出す。1時間未満は「M:SS」（例 0:07、12:34）、以上は「H:MM:SS」（例 1:05:12）。
     /// それ以外は 60秒未満「今」、60分未満「N分」、24時間未満「N時間」、それ以上「N日」。負の値は「今」
     func elapsedText(now: Date = Date()) -> String {
         let seconds = now.timeIntervalSince(statusSince)
         if status == .running {
-            let totalMinutes = max(0, Int(seconds / 60))
-            return String(format: "%d:%02d", totalMinutes / 60, totalMinutes % 60)
+            let total = max(0, Int(seconds))
+            let h = total / 3600, m = total / 60 % 60, s = total % 60
+            return h > 0 ? String(format: "%d:%02d:%02d", h, m, s) : String(format: "%d:%02d", m, s)
         }
         if seconds < 60 { return "今" }
         let minutes = Int(seconds / 60)

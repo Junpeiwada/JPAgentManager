@@ -9,10 +9,10 @@ enum SampleData {
         func ago(minutes: Double) -> Date { now.addingTimeInterval(-minutes * 60) }
         func session(_ key: String, _ repo: String, _ status: SessionStatus, minutes: Double,
                      title: String?, action: String? = nil, prompt: String? = nil,
-                     unseen: Bool = false, agents: Int = 0) -> Session {
+                     unseen: Bool = false, agents: Int = 0, shell: Bool = false) -> Session {
             Session(id: key, pid: nil, cwd: "\(root)/\(repo)", status: status,
                     statusSince: ago(minutes: minutes), title: title,
-                    lastAction: action, lastPrompt: prompt, completedUnseen: unseen,
+                    lastAction: action, lastPrompt: prompt, backgroundShell: shell, completedUnseen: unseen,
                     runningAgents: agents)
         }
         func repo(_ name: String, branch: String?, status: GitStatus? = nil, _ sessions: [Session]) -> Repo {
@@ -37,7 +37,7 @@ enum SampleData {
                  status: GitStatus(upstream: "origin/feature/agent-view", ahead: 2), [
                 session("sample-notebook-1", "Notebook", .running, minutes: 12,
                         title: "複数Macのエージェント統合ビュー",
-                        action: "Write: 図/案1-メニューバー.svg"),
+                        action: "Bash: npm run build", shell: true),
                 session("sample-notebook-2", "Notebook", .idle, minutes: 60,
                         title: "同期スクリプトの dry-run 表示を整理",
                         action: "返答済み"),

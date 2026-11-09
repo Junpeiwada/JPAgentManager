@@ -21,10 +21,14 @@ final class SessionTests: XCTestCase {
         XCTAssertEqual(text(.idle, seconds: -10), "今")
     }
 
-    func test実行中は時分表示() {
+    func test実行中は分秒表示() {
         XCTAssertEqual(text(.running, seconds: 0), "0:00")
-        XCTAssertEqual(text(.running, seconds: 45 * 60), "0:45")
-        XCTAssertEqual(text(.running, seconds: 65 * 60), "1:05")
+        XCTAssertEqual(text(.running, seconds: 7.9), "0:07")
+        XCTAssertEqual(text(.running, seconds: 45), "0:45")
+        XCTAssertEqual(text(.running, seconds: 12 * 60 + 34), "12:34")
+        XCTAssertEqual(text(.running, seconds: 3599), "59:59")
+        XCTAssertEqual(text(.running, seconds: 3600 + 5 * 60 + 12), "1:05:12")
+        XCTAssertEqual(text(.running, seconds: -10), "0:00")
     }
 
     func test状態の並び順() {
