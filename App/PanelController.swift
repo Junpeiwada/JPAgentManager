@@ -55,9 +55,10 @@ private final class PanelLayout: ObservableObject {
     @Published var alwaysOnTop = true
 }
 
-/// 掴んで動かすとウィンドウを動かす NSView。動かし始めた瞬間に onDragStart を呼ぶ
+/// 掴んで動かすとウィンドウを動かす NSView。動かし始めた瞬間に onDragStart、離したら onDragEnd を呼ぶ
 private final class DragHandleView: NSView {
     var onDragStart: () -> Void = {}
+    var onDragEnd: () -> Void = {}
     private var downEvent: NSEvent?
     /// これ以上動かしたらドラッグとみなす距離（クリックの手ぶれと区別する）
     private static let threshold: CGFloat = 4
@@ -78,6 +79,7 @@ private final class DragHandleView: NSView {
         onDragStart()
         // 以降の追従はウィンドウサーバーに任せる（マウスを離すまで戻らない）
         window?.performDrag(with: down)
+        onDragEnd()
     }
 
     override func mouseUp(with event: NSEvent) { downEvent = nil }
@@ -85,12 +87,17 @@ private final class DragHandleView: NSView {
 
 private struct WindowDragHandle: NSViewRepresentable {
     let onDragStart: () -> Void
+    let onDragEnd: () -> Void
     func makeNSView(context: Context) -> DragHandleView {
         let view = DragHandleView()
         view.onDragStart = onDragStart
+        view.onDragEnd = onDragEnd
         return view
     }
-    func updateNSView(_ view: DragHandleView, context: Context) { view.onDragStart = onDragStart }
+    func updateNSView(_ view: DragHandleView, context: Context) {
+        view.onDragStart = onDragStart
+        view.onDragEnd = onDragEnd
+    }
 }
 
 /// パネルの中身。書類棚をスクロール可能に包み、下にフッターを置く
@@ -104,18 +111,24 @@ private struct PanelContent: View {
     let onContentHeightChange: () -> Void
     /// グリップを掴んで動かし始めたとき（分離する）
     let onGripDrag: () -> Void
+    /// グリップを離したとき（置いた位置を基準点にする）
+    let onGripDragEnd: () -> Void
     /// 分離中の × が押されたとき
     let onCloseDetached: () -> Void
     /// 分離中のピン（常に手前）が押されたとき
     let onToggleAlwaysOnTop: () -> Void
     @State private var contentHeight: CGFloat = 0
+    /// 注意文（余白込み）の実寸。出ていないときは使わない
+    @State private var errorHeight: CGFloat = 0
 
     private static let headerHeight: CGFloat = 22
     private static let footerHeight: CGFloat = 40
 
     var body: some View {
         // 棚の実寸を測り、上限までは中身に合わせ、超えたらスクロールにする
-        let limit = max(layout.maxHeight - Self.headerHeight - Self.footerHeight, 1)
+        // 注意文が出ている間はその分も引き、パネル全体が上限に収まるようにする
+        let errorShown = model.lastError == nil ? 0 : errorHeight
+        let limit = max(layout.maxHeight - Self.headerHeight - Self.footerHeight - errorShown, 1)
         let shown = min(max(contentHeight, 1), limit)
         VStack(spacing: 0) {
             header
@@ -127,6 +140,10 @@ private struct PanelContent: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 18)
                     .padding(.top, 8)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
+                        errorHeight = height
+                        onContentHeightChange()
+                    }
             }
             ScrollView(.vertical, showsIndicators: contentHeight > limit) {
                 // 経過時間が止まらないよう、1秒ごとに now を更新する
@@ -155,7 +172,7 @@ private struct PanelContent: View {
     private var header: some View {
         ZStack {
             // 帯の幅いっぱいに掴む場所を敷く。ボタンはこの上に重ね、隙間のクリックはここへ届く
-            WindowDragHandle(onDragStart: onGripDrag)
+            WindowDragHandle(onDragStart: onGripDrag, onDragEnd: onGripDragEnd)
                 .help(layout.isDetached ? "掴んで移動" : "掴んで動かすと切り離せます")
             Capsule()
                 .fill(Color.secondary.opacity(0.45))
@@ -226,6 +243,11 @@ final class PanelController: NSObject {
     private var localMonitor: Any?
     private var frameObserver: NSObjectProtocol?
     private var resignObserver: NSObjectProtocol?
+    /// 分離中の基準点（ユーザーが置いた位置の下端）。分離していなければ nil。
+    /// 上端を固定すると、増えたときに下へ伸びて画面の外へ出てしまう。それを避けるため下端を基準にして上へ伸ばす
+    private var detachedBottom: CGFloat?
+    /// グリップでウィンドウを動かしている最中か。動かしている間は高さを合わせない
+    private var isDragging = false
     /// 最後に閉じた時刻。キー喪失で閉じた直後のステータスアイテムのクリックを無視するため
     private var lastClosedAt: Date = .distantPast
 
@@ -253,6 +275,7 @@ final class PanelController: NSObject {
         var closeIfAttached: () -> Void = {}
         var contentHeightChanged: () -> Void = {}
         var detach: () -> Void = {}
+        var dragEnded: () -> Void = {}
         var closeDetached: () -> Void = {}
         var toggleAlwaysOnTop: () -> Void = {}
         let layout = self.layout
@@ -267,6 +290,7 @@ final class PanelController: NSObject {
             DispatchQueue.main.async { model.onCheckForUpdates() }
         }, onContentHeightChange: { contentHeightChanged() },
            onGripDrag: { detach() },
+           onGripDragEnd: { dragEnded() },
            onCloseDetached: { closeDetached() },
            onToggleAlwaysOnTop: { toggleAlwaysOnTop() }))
         // 中身の intrinsicContentSize に合わせてウィンドウを伸縮させる
@@ -276,7 +300,8 @@ final class PanelController: NSObject {
             guard let self, !self.isDetached else { return }
             self.close()
         }
-        detach = { [weak self] in self?.detach() }
+        detach = { [weak self] in self?.dragStarted() }
+        dragEnded = { [weak self] in self?.dragEnded() }
         closeDetached = { [weak self] in self?.close() }
         toggleAlwaysOnTop = { [weak self] in self?.toggleAlwaysOnTop() }
         // 状態の反映を待ってから、1サイクル遅らせて高さを合わせる
@@ -284,7 +309,7 @@ final class PanelController: NSObject {
             DispatchQueue.main.async { self?.fitToContent() }
         }
         panel.contentView = hosting
-        // 中身の高さが変わったら、上端を固定したままパネルを伸縮する
+        // 中身の高さが変わったらパネルを伸縮する（どちらの端を固定するかは fitToContent）
         hosting.postsFrameChangedNotifications = true
         frameObserver = NotificationCenter.default.addObserver(
             forName: NSView.frameDidChangeNotification, object: hosting, queue: .main
@@ -307,15 +332,35 @@ final class PanelController: NSObject {
         if let m = localMonitor { NSEvent.removeMonitor(m) }
     }
 
-    /// 上端を固定して、中身の高さにウィンドウを合わせる
+    /// 中身の高さにウィンドウを合わせる。メニューの状態では上端を固定して下へ伸ばす。
+    /// 分離中は基準点（置いた位置の下端）から上へ伸ばす（detachedFrame）
     private func fitToContent() {
-        guard panel.isVisible else { return }
+        guard panel.isVisible, !isDragging else { return }
         let size = hosting.fittingSize
-        guard size.height > 1, abs(size.height - panel.frame.height) > 0.5 else { return }
+        guard size.height > 1 else { return }
         var f = panel.frame
-        f.origin.y += f.height - size.height
-        f.size = size
+        if layout.isDetached, let bottom = detachedBottom,
+           let visible = (panel.screen ?? NSScreen.main)?.visibleFrame {
+            // 解像度の変更・Dock の切り替えなどで可視領域が変わったら、中身の上限も合わせる（変わると測り直して再びここへ来る）
+            if abs(layout.maxHeight - visible.height) > 0.5 { layout.maxHeight = visible.height }
+            f = Self.detachedFrame(height: size.height, anchorBottom: bottom, current: f, visible: visible)
+        } else {
+            f.origin.y += f.height - size.height
+            f.size = size
+        }
+        guard abs(f.minY - panel.frame.minY) > 0.5 || abs(f.height - panel.frame.height) > 0.5 else { return }
         panel.setFrame(f, display: true)
+    }
+
+    /// 分離中の置き場所。下端を基準点に置いて上へ伸ばし、画面の上端に届いたら下へ伸ばす。
+    /// 高さは画面の可視領域に収める（収まらない分は中身がスクロールする）。左右の位置と幅は変えない
+    nonisolated static func detachedFrame(height: CGFloat, anchorBottom: CGFloat,
+                                          current: NSRect, visible: NSRect) -> NSRect {
+        let h = min(height, visible.height)
+        var bottom = max(anchorBottom, visible.minY)
+        if bottom + h > visible.maxY { bottom = visible.maxY - h }
+        bottom = max(bottom, visible.minY)
+        return NSRect(x: current.minX, y: bottom, width: current.width, height: h)
     }
 
     func toggle() {
@@ -377,6 +422,8 @@ final class PanelController: NSObject {
         panel.orderOut(nil)
         removeMonitors()
         layout.isDetached = false
+        detachedBottom = nil
+        isDragging = false
         panel.level = .statusBar
     }
 
@@ -386,6 +433,28 @@ final class PanelController: NSObject {
         layout.isDetached = true
         removeMonitors()
         applyDetachedLevel()
+    }
+
+    /// グリップで動かし始めたとき。分離していなければ分離する
+    private func dragStarted() {
+        isDragging = true
+        detach()
+    }
+
+    /// グリップを離したとき。置いた位置の下端を新しい基準点にし、高さの上限を画面の上端までに広げる
+    private func dragEnded() {
+        isDragging = false
+        guard layout.isDetached else { return }
+        detachedBottom = panel.frame.minY
+        if let visible = (panel.screen ?? NSScreen.main)?.visibleFrame {
+            layout.maxHeight = visible.height
+        }
+        // 上限の変更が中身に反映されてから合わせる
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.hosting.layoutSubtreeIfNeeded()
+            self.fitToContent()
+        }
     }
 
     private func toggleAlwaysOnTop() {
