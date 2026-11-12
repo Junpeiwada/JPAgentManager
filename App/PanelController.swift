@@ -243,9 +243,9 @@ final class PanelController: NSObject {
     private var localMonitor: Any?
     private var frameObserver: NSObjectProtocol?
     private var resignObserver: NSObjectProtocol?
-    /// 分離中の基準点（ユーザーが置いた位置の下端）。分離していなければ nil。
-    /// 上端を固定すると、増えたときに下へ伸びて画面の外へ出てしまう。それを避けるため下端を基準にして上へ伸ばす
-    private var detachedBottom: CGFloat?
+    /// 分離中の基準点（ユーザーが置いた位置の上端）。分離していなければ nil。
+    /// 中身の増減ではこの値を変えない。画面の下にはみ出す間だけ上へずらし、減ったらここへ戻す
+    private var detachedTop: CGFloat?
     /// グリップでウィンドウを動かしている最中か。動かしている間は高さを合わせない
     private var isDragging = false
     /// 最後に閉じた時刻。キー喪失で閉じた直後のステータスアイテムのクリックを無視するため
@@ -333,17 +333,17 @@ final class PanelController: NSObject {
     }
 
     /// 中身の高さにウィンドウを合わせる。メニューの状態では上端を固定して下へ伸ばす。
-    /// 分離中は基準点（置いた位置の下端）から上へ伸ばす（detachedFrame）
+    /// 分離中は基準点（置いた位置の上端）から下へ伸ばし、はみ出す分だけ上へずらす（detachedFrame）
     private func fitToContent() {
         guard panel.isVisible, !isDragging else { return }
         let size = hosting.fittingSize
         guard size.height > 1 else { return }
         var f = panel.frame
-        if layout.isDetached, let bottom = detachedBottom,
+        if layout.isDetached, let top = detachedTop,
            let visible = (panel.screen ?? NSScreen.main)?.visibleFrame {
             // 解像度の変更・Dock の切り替えなどで可視領域が変わったら、中身の上限も合わせる（変わると測り直して再びここへ来る）
             if abs(layout.maxHeight - visible.height) > 0.5 { layout.maxHeight = visible.height }
-            f = Self.detachedFrame(height: size.height, anchorBottom: bottom, current: f, visible: visible)
+            f = Self.detachedFrame(height: size.height, anchorTop: top, current: f, visible: visible)
         } else {
             f.origin.y += f.height - size.height
             f.size = size
@@ -352,15 +352,16 @@ final class PanelController: NSObject {
         panel.setFrame(f, display: true)
     }
 
-    /// 分離中の置き場所。下端を基準点に置いて上へ伸ばし、画面の上端に届いたら下へ伸ばす。
+    /// 分離中の置き場所。上端を基準点に置いて下へ伸ばし、画面の下端からはみ出すときだけその分を上へずらす。
+    /// 基準点は変えないので、中身が減れば置いた位置へ戻る。
     /// 高さは画面の可視領域に収める（収まらない分は中身がスクロールする）。左右の位置と幅は変えない
-    nonisolated static func detachedFrame(height: CGFloat, anchorBottom: CGFloat,
+    nonisolated static func detachedFrame(height: CGFloat, anchorTop: CGFloat,
                                           current: NSRect, visible: NSRect) -> NSRect {
         let h = min(height, visible.height)
-        var bottom = max(anchorBottom, visible.minY)
-        if bottom + h > visible.maxY { bottom = visible.maxY - h }
-        bottom = max(bottom, visible.minY)
-        return NSRect(x: current.minX, y: bottom, width: current.width, height: h)
+        var top = min(anchorTop, visible.maxY)
+        if top - h < visible.minY { top = visible.minY + h }
+        top = min(top, visible.maxY)
+        return NSRect(x: current.minX, y: top - h, width: current.width, height: h)
     }
 
     func toggle() {
@@ -422,7 +423,7 @@ final class PanelController: NSObject {
         panel.orderOut(nil)
         removeMonitors()
         layout.isDetached = false
-        detachedBottom = nil
+        detachedTop = nil
         isDragging = false
         panel.level = .statusBar
     }
@@ -441,11 +442,11 @@ final class PanelController: NSObject {
         detach()
     }
 
-    /// グリップを離したとき。置いた位置の下端を新しい基準点にし、高さの上限を画面の上端までに広げる
+    /// グリップを離したとき。置いた位置の上端を新しい基準点にし、高さの上限を画面の可視領域いっぱいに広げる
     private func dragEnded() {
         isDragging = false
         guard layout.isDetached else { return }
-        detachedBottom = panel.frame.minY
+        detachedTop = panel.frame.maxY
         if let visible = (panel.screen ?? NSScreen.main)?.visibleFrame {
             layout.maxHeight = visible.height
         }
